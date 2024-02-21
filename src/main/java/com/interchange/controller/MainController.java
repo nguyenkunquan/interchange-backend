@@ -44,6 +44,9 @@ public class MainController {
 
     @RequestMapping(value = "/loginSuccess")
     public String LoginResult(Model model, Principal principal) {
+        if(principal == null) {
+            return "redirect:/login";
+        }
         String username = principal.getName();
         User user = userRepository.findByUserIdOrEmailOrPhoneNumber(username, username, username)
                 .orElseThrow(() -> new UsernameNotFoundException("User can't found "));
