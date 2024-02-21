@@ -24,9 +24,6 @@ public class Supplier {
     private String supPhone;
     private String supAddress;
 
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "suppliers")
-//    private Set<Product> products;
-
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 }

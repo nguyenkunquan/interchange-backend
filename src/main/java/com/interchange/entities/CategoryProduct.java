@@ -17,11 +17,11 @@ import java.util.Set;
 public class CategoryProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productCategoryId;
+    private int proCategoryId;
     private String categoryName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proId")
+    @JoinColumn(name = "proCategoryId")
     private Set<Product> products = new HashSet<>();
 
 }

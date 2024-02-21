@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,5 +25,7 @@ public class SupplierProduct {
     @ManyToOne
     private Supplier supplier;
 
-    private double price;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplierProductId")
+    private Set<ProductDetails> productDetails = new HashSet<>();
 }

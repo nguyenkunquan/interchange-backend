@@ -21,9 +21,8 @@ public class Material {
     private String materialName;
     private String materialDes;
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proId")
+    @JoinColumn(name = "materialId")
     private Set<Product> products = new HashSet<>();
 
 }
