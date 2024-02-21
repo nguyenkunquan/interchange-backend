@@ -14,13 +14,13 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class CategoryProject {
+public class CategoryRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int projCategoryId;
+    private int roomCategoryId;
     private String categoryName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "projCategoryId")
-    private Set<Project> projects = new HashSet<>();
+    @JoinColumn(name = "roomCategoryId")
+    private Set<Room> rooms = new HashSet<>();
 }

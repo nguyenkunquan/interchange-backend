@@ -27,5 +27,5 @@ public class SupplierProduct {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supplierProductId")
-    private Set<ProductDetails> productDetails = new HashSet<>();
+    private Set<ProductDetail> productDetails = new HashSet<>();
 }

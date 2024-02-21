@@ -6,21 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class CategoryProject {
+public class ImageRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int projCategoryId;
-    private String categoryName;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "projCategoryId")
-    private Set<Project> projects = new HashSet<>();
+    private int fileId;
+    private String fileName;
+    private String contentType;
+    @Lob
+    @Column(length = 50000000)
+    private byte[] content;
+    private int roomId;
 }
