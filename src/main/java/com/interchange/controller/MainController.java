@@ -16,8 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -37,7 +37,8 @@ public class MainController {
         return "home";
     }
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
+    public String loginPage(@RequestParam(name = "error", required = false) String error, Model model) {
+        model.addAttribute("error", error);
         return "login";
     }
 

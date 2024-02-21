@@ -8,16 +8,17 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig  {
     @Autowired
     private UserDetailServiceImpl userDetailService;
 
@@ -33,39 +34,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    protected void configure(AuthenticationManagerBuilder auth)  {
         auth.authenticationProvider(authenticationProvider()); //Bien pass user nhap thanh bcrypt
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/").permitAll();
-        http.authorizeRequests().antMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN");
-        http.authorizeRequests().antMatchers("/loginSuccess").permitAll();
-        http.authorizeRequests().antMatchers("/login?error=false").permitAll();
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-        http.authorizeRequests().antMatchers("/error").permitAll();
-
-        http.authorizeRequests().and().formLogin()
-                .loginProcessingUrl("/login")
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/loginSuccess")
-                .failureUrl("/login?error=true")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessfully");
-
-        http.authorizeRequests().and()
-                .rememberMe().tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(24 * 60 * 60);
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN")
+                                .anyRequest().permitAll()
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/loginSuccess")
+                                .failureUrl("/login?error=true")
+                                .usernameParameter("username")
+                                .passwordParameter("password")
+                                .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/logoutSuccessfully")
+                )
+                .rememberMe(rememberMe ->
+                        rememberMe
+                                .tokenRepository(persistentTokenRepository())
+                                .tokenValiditySeconds(24 * 60 * 60)
+//                                .rememberMeParameter("remember-me")
+//                                .rememberMeCookieName("remember-me-cookies")
+                );
+        return http.build();
     }
-
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         return new InMemoryTokenRepositoryImpl();
     }
-
 }
