@@ -1,7 +1,7 @@
 package com.interchange.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
+//import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int supId;
     private String supName;
-    @Pattern(regexp = "^(0[35789]\\d{8})$", message = "Invalid format phone")
+    //@Pattern(regexp = "^(0[35789]\\d{8})$", message = "Invalid format phone")
     private String supPhone;
     private String supAddress;
 

@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.interchange.entities.ImageProduct;
 import com.interchange.entities.SupplierProduct;
 import jakarta.persistence.*;
@@ -26,14 +27,14 @@ public class Product {
     private String proDescription;
     private String proColor;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "proId")
     private Set<ImageProduct> imageProducts = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "proId")
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
-
-
 
 }
