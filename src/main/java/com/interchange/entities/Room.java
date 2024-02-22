@@ -30,4 +30,10 @@ public class Room {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "roomId")
     private Set<ImageRoom> imageRooms = new HashSet<>();
+
+//    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<RoomProduct> roomProducts = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomId")
+    private Set<RoomProduct> roomProducts = new HashSet<>();
 }
