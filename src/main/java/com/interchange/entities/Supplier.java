@@ -24,6 +24,7 @@ public class Supplier {
     private String supPhone;
     private String supAddress;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "supId")
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 }

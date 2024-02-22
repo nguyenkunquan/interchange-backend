@@ -19,10 +19,9 @@ public class Material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int materialId;
     private String materialName;
-    private String materialDes;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "materialId")
-    private Set<Product> products = new HashSet<>();
+    private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
 
 }

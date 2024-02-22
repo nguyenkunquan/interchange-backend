@@ -22,16 +22,18 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int proId;
     private String proName;
+    private int categoryMaterialId;
     private String proDescription;
-    private int materialId;
     private String proColor;
-    private int proCategoryId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "proId")
     private Set<ImageProduct> imageProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "proId")
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
+
+
 
 }

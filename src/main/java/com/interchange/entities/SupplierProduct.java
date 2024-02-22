@@ -19,11 +19,8 @@ public class SupplierProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int supplierProductId;
 
-    @ManyToOne
-    private Product product;
-
-    @ManyToOne
-    private Supplier supplier;
+    private int supId;
+    private int proId;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supplierProductId")

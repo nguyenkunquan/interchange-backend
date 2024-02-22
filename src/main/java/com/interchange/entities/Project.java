@@ -24,6 +24,7 @@ public class Project {
     private String projName;
     private String projDes;
     private int projCategoryId;
+    private String projAddress;
     private int projProcess;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
