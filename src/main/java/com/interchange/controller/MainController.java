@@ -22,7 +22,7 @@ import java.security.Principal;
 
 @Controller
 public class MainController {
-    private static final Logger log = LoggerFactory.getLogger(MainController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -32,11 +32,11 @@ public class MainController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping(value = "/")
     public String homePage() {
         return "home";
     }
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @GetMapping(value = "/login")
     public String loginPage(@RequestParam(name = "error", required = false) String error, Model model) {
         model.addAttribute("error", error);
         return "login";
@@ -51,7 +51,7 @@ public class MainController {
         User user = userRepository.findByUserIdOrEmailOrPhoneNumber(username, username, username)
                 .orElseThrow(() -> new UsernameNotFoundException("User can't found "));
         String role = String.valueOf(user.getRole());
-        System.out.println(role);
+        logger.info(role);
         if(role.equals("ADMIN")) {
             return "adminPage";
         } else if(role.equals("CUSTOMER")) {
@@ -67,7 +67,7 @@ public class MainController {
         return "accessDeniedPage";
     }
 
-    @RequestMapping(value ="/logoutSuccessfully", method = RequestMethod.GET)
+    @GetMapping(value ="/logoutSuccessfully")
     public String LogoutSuccessfulPage(Model model) {
         model.addAttribute("logoutNotification", "Logout Successfully");
         return "home";
@@ -99,25 +99,23 @@ public class MainController {
             bindingResult.addError(new FieldError(
                     "user", "password", "The re-enter password don't match the password"));
         }
-        System.out.println(user.getBirthDate());
-        System.out.println(user);
+        logger.info(user.getBirthDate());
         session.setAttribute("user", user);
 
         if(bindingResult.hasErrors()) {
-            return "register";
+            return "redirect:/registerPage";
         }
         return "redirect:send";
     }
     @GetMapping(value = "/send")
     public String sendMessage(HttpSession session) {
         if(twilioConfig == null || twilioConfig.getTrialNumber() == null) {
-            return "register";
+            return "redirect:/registerPage";
         }
         User user = (User) session.getAttribute("user");
         if(user == null) {
-            return "register";
+            return "redirect:/registerPage";
         }
-        System.out.println(user);
         otpService.sendOTPForPasswordReset(user.getPhoneNumber());
 
         session.setAttribute("user", user);
