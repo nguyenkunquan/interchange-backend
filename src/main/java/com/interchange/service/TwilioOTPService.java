@@ -2,7 +2,6 @@ package com.interchange.service;
 
 import com.interchange.config.TwilioConfig;
 import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.twiml.voice.Sms;
 import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,8 @@ public class TwilioOTPService {
     private TwilioConfig twilioConfig;
 
     private String generateOTP;
+
+    private Random random = new Random();
     public void sendOTPForPasswordReset(String phoneNumber) {
 
         PhoneNumber to = new PhoneNumber(phoneNumber);
@@ -29,6 +30,6 @@ public class TwilioOTPService {
         return generateOTP.equals(enteredOTP);
     }
     private String generateOTP() {
-        return new DecimalFormat("000000").format(new Random().nextInt(999999));
+        return new DecimalFormat("000000").format(random.nextInt(999999));
     }
 }
