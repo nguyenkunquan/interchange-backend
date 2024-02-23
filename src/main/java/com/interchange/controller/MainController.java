@@ -142,5 +142,25 @@ public class MainController {
             return "otp";
         }
     }
+    @GetMapping("/showProfile")
+    public String showProfile(@RequestParam("username") String username, Model model) {
+        if(username == null || username.isEmpty()) {
+            model.addAttribute("error", "Some error when load the User");
+            return "home";
+        }
+        else {
+            User user = userRepository.findByUserIdOrEmailOrPhoneNumber(username, username, username)
+                    .orElseThrow(() -> new UsernameNotFoundException("User can't found "));
+            model.addAttribute("user", user);
+            return "manageProfile";
+        }
+    }
+    @PostMapping("/saveInfo")
+    public String modProfile(User user, Model model) {
+        userRepository.setUserInfoById(user.getFirstName(), user.getLastName(), user.getPhoneNumber(),
+                user.getBirthDate(), user.getProvince(),user.getDistrict(), user.getWard(), user.getStreetAddress(), user.getUserId());
+        return "redirect:/showProfile?username=" + user.getUserId();
+    }
+
 }
 

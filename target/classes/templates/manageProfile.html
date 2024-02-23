@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Profile</title>
+</head>
+<body>
+<form th:action= "@{/saveInfo}" method="post" th:object="${user}">
+    <label>
+        ID <input type="text" name="userID" th:field="*{userId}"/>
+    </label><br>
+    <label>
+        Họ <input type="text" name="firstName" th:field="*{firstName}" />
+    </label><br>
+    <label>
+        Tên <input type="text" name="lastName" th:field="*{lastName}"/>
+    </label><br>
+    <label>
+        Email <input type="text" name="email" th:field="*{email}">
+    </label><br>
+    <label>
+        Phone Number <input type="text" name="phoneNumber" th:field="*{phoneNumber}"/>
+    </label><br>
+    <label>
+        Ngày sinh <input  type="date" name="birthDate" th:field="*{birthDate}"/>
+    </label><br>
+    <label>
+        Vai trò <input type="text" name="role" th:field="*{role}"/>
+    </label><br>
+    <label>
+        Tỉnh <input type="text" name="province" th:field="*{province}"/>
+    </label>
+    <label>
+        Quận <input type="text" name="district" th:field="*{district}">
+    </label><br>
+    <label>
+        Phường <input type="text" name="ward" th:field="*{ward}">
+    </label>
+    <label>
+        Số nhà, tên đường <input type="text" name="streetAddress" th:field="*{streetAddress}"/>
+    </label>
+    <label>
+        <input type="submit" value="Chỉnh sửa"/>
+    </label>
+</form>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.interchange.service;
 
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,6 +35,17 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return  new org.springframework.security.core.userdetails.User(user.getUserId(),
                 user.getPassword(), grantList);
     }
+//    @Transactional
+//    public void updateInfoByID(User user) {
+//         if(userRepository.existsByUserId(user.getUserId())) {
+//             user.setFirstName(user.getFirstName());
+//             user.setLastName(user.getLastName());
+//             user.setPhoneNumber(user.getPhoneNumber());
+//             user.setEmail(user.getEmail());
+//             user.setBirthDate(user.getBirthDate());
+//             user.setProvince(user.getBirthDate());
+//         }
+//    }
 
 
 }
