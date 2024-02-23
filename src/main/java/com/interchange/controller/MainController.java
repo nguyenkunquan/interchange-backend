@@ -43,7 +43,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/loginSuccess")
-    public String LoginResult(Model model, Principal principal) {
+    public String loginResult(Model model, Principal principal) {
         if(principal == null) {
             return "redirect:/login";
         }
@@ -62,19 +62,19 @@ public class MainController {
             return "login";
     }
     @RequestMapping("/403")
-    public String DeniedAccess(Model model) {
+    public String deniedAccess(Model model) {
         model.addAttribute("error", "You don't have accessed this page");
         return "accessDeniedPage";
     }
 
     @GetMapping(value ="/logoutSuccessfully")
-    public String LogoutSuccessfulPage(Model model) {
+    public String logoutSuccessfulPage(Model model) {
         model.addAttribute("logoutNotification", "Logout Successfully");
         return "home";
     }
 
     @RequestMapping("/registerPage")
-    public String RegisterPage(Model model) {
+    public String registerPage(Model model) {
         String rePassword = "";
         model.addAttribute("user", new User());
         model.addAttribute("rePassword", rePassword);
@@ -99,11 +99,15 @@ public class MainController {
             bindingResult.addError(new FieldError(
                     "user", "password", "The re-enter password don't match the password"));
         }
+        if(!user.isOver18()) {
+            bindingResult.addError(new FieldError(
+                    "user","birthDate", "You must more than 18 years old"));
+        }
         logger.info(user.getBirthDate());
         session.setAttribute("user", user);
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/registerPage";
+            return "register";
         }
         return "redirect:send";
     }
