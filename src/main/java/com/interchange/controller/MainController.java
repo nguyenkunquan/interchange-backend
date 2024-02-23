@@ -1,5 +1,4 @@
 package com.interchange.controller;
-
 import com.interchange.config.TwilioConfig;
 import com.interchange.entities.Role;
 import com.interchange.entities.User;
@@ -15,9 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 
 @Controller
@@ -156,10 +155,18 @@ public class MainController {
         }
     }
     @PostMapping("/saveInfo")
-    public String modProfile(User user, Model model) {
-        userRepository.setUserInfoById(user.getFirstName(), user.getLastName(), user.getPhoneNumber(),
-                user.getBirthDate(), user.getProvince(),user.getDistrict(), user.getWard(), user.getStreetAddress(), user.getUserId());
-        return "redirect:/showProfile?username=" + user.getUserId();
+    public String modProfile(User user, RedirectAttributes redirectAttributes, BindingResult bindingResult, Model model) {
+        if(!user.isOver18()) {
+            bindingResult.addError(new FieldError(
+                    "user","birthDate", "You must more than 18 years old"));
+        }
+        if(bindingResult.hasErrors()) {
+            return "manageProfile";
+        }
+        userRepository.setUserInfoById(user.getFirstName(), user.getLastName(),
+                user.getBirthDate(), user.getProvince(), user.getDistrict(), user.getWard(), user.getStreetAddress(), user.getUserId());
+        model.addAttribute("successMessage", "Cập nhập hồ sơ thành công");
+        return "manageProfile";
     }
 
 }
