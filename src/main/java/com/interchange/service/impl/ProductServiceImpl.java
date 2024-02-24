@@ -14,7 +14,12 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
     ProductRepository productRepository;
 
     @Override
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> findAll() {
         return getResponseEntity(productRepository.findAll());
+    }
+
+    @Override
+    public ResponseEntity<?> findAllProductDetailByRoomId(int roomId) {
+        return getResponseEntity(productRepository.findAllProductDetailByRoomId(roomId));
     }
 }

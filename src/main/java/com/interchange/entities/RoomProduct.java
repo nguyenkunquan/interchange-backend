@@ -26,4 +26,6 @@ public class RoomProduct {
     private int proDetailId;
 
     private int quantity;
+    @Column(nullable = true)
+    private double totalPrice;
 }
