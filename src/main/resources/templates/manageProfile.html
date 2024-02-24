@@ -48,6 +48,14 @@
     <div style="color: red" th:if="${#fields.hasErrors('streetAddress')}" th:errors="*{streetAddress}"></div>
     <label>
         <input type="submit" value="Chỉnh sửa"/>
+    </label><br>
+</form>
+<form th:action="@{/changePasswordPage}" method="post" th:object="${user}">
+    <label>
+        <input type="text" name="userID" th:field="*{userId}" hidden="hidden"/>
+    </label>
+    <label>
+        <input type="submit" name="" value="Đổi mật khẩu"/>
     </label>
 </form>
 <p th:if="${successMessage}" th:utext="${successMessage}" style="color: red"></p>

@@ -1,5 +1,6 @@
 package com.interchange.controller;
 import com.interchange.config.TwilioConfig;
+import com.interchange.dto.ChangePasswordDTO;
 import com.interchange.entities.Role;
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
@@ -122,14 +123,14 @@ public class MainController {
         otpService.sendOTPForPasswordReset(user.getPhoneNumber());
 
         session.setAttribute("user", user);
-        return "otp";
+        return "otpForRegisterPage";
     }
-    @PostMapping(value = "/checkOTP")
-    public String checkOTP(@RequestParam("enteredOTP") String enteredOTP, HttpSession session, Model model) {
+    @PostMapping(value = "/checkOTPForRegister")
+    public String checkOTPForRegister(@RequestParam("enteredOTP") String enteredOTP, HttpSession session, Model model) {
         if(otpService.verifyOTP(enteredOTP)) {
             User user = (User) session.getAttribute("user");
             if(user == null) {
-                return "otp";
+                return "otpForRegisterPage";
             }
             user.setRole(Role.CUSTOMER);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -138,7 +139,7 @@ public class MainController {
             return "home";
         } else {
             model.addAttribute("error", "Invalid OTP. Please try again");
-            return "otp";
+            return "otpForRegisterPage";
         }
     }
     @GetMapping("/showProfile")
@@ -168,6 +169,67 @@ public class MainController {
         model.addAttribute("successMessage", "Cập nhập hồ sơ thành công");
         return "manageProfile";
     }
+    @PostMapping("/changePasswordPage")
+    public String showChangePasswordPage(User user, Model model) {
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setUserId(user.getUserId());
+        model.addAttribute("dto", dto);
+        return "changePassPage";
+    }
 
+    @PostMapping("/changePassword")
+    public String verifyChangePassword(@ModelAttribute("dto") ChangePasswordDTO dto, HttpSession session, BindingResult bindingResults) {
+        User user = userRepository.findByUserId(dto.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException("User can't found "));
+
+
+            if(!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+                bindingResults.addError(new FieldError(
+                        "dto", "oldPassword", "The old password not true"));
+            }
+            if(!dto.getNewPassword().equals(dto.getReNewPassword())) {
+                bindingResults.addError(new FieldError("dto", "reNewPassword",
+                        "The re-password do not match"));
+            }
+            if(bindingResults.hasErrors()) {
+                return "changePassPage";
+            }
+            session.setAttribute("dto", dto);
+            session.setAttribute("user", user);
+            return "redirect:/sendOTPToChangePassword";
+    }
+    @GetMapping("/sendOTPToChangePassword")
+    public String sendOTPChangePassword(HttpSession session) {
+        if(twilioConfig.getTrialNumber() == null || twilioConfig.getAccountSid() == null || twilioConfig.getAccountSid() == null ) {
+            return "changePassPage";
+        }
+        else {
+            User user = (User) session.getAttribute("user");
+            ChangePasswordDTO dto = (ChangePasswordDTO) session.getAttribute("dto");
+            if(user != null) {
+                otpService.sendOTPForPasswordReset(user.getPhoneNumber());
+            }
+            session.setAttribute("user", user);
+            session.setAttribute("dto", dto);
+        }
+        return "otpForPasswordResetPage";
+    }
+    @PostMapping("/checkOTPForPasswordReset")
+    public String checkOTPForPasswordRest(@RequestParam("enteredOTP") String enteredOTP, HttpSession session, Model model) {
+        if(otpService.verifyOTP(enteredOTP)) {
+            User user = (User) session.getAttribute("user");
+            ChangePasswordDTO dto = (ChangePasswordDTO) session.getAttribute("dto");
+            if(user == null) {
+                return "otpForPasswordResetPage";
+            }
+            user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+            userRepository.setPasswordById(user.getPassword(), user.getUserId());
+            session.invalidate();
+            return "home";
+        } else {
+            model.addAttribute("error", "Invalid OTP. Please try again");
+            return "otpForPasswordResetPage";
+        }
+    }
 }
 
