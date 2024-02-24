@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Profile</title>
+</head>
+<body>
+<form th:action= "@{/saveInfo}" method="post" th:object="${user}">
+    <label>
+        ID <input type="text" name="userID" th:field="*{userId}" readonly="readonly"/>
+    </label><br>
+    <label>
+        Họ <input type="text" name="firstName" th:field="*{firstName}" />
+    </label><br>
+    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+    <label>
+        Tên <input type="text" name="lastName" th:field="*{lastName}"/>
+    </label><br>
+    <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+    <label>
+        Email <input type="text" name="email" th:field="*{email}" readonly="readonly">
+    </label><br>
+    <label>
+        Phone Number <input type="text" name="phoneNumber" th:field="*{phoneNumber}" readonly="readonly"/>
+    </label><br>
+    <label>
+        Ngày sinh <input  type="date" name="birthDate" th:field="*{birthDate}"/>
+    </label><br>
+    <div style="color: red" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+    <label>
+        Vai trò <input type="text" name="role" th:field="*{role}"/>
+    </label><br>
+    <label>
+        Tỉnh <input type="text" name="province" th:field="*{province}"/>
+    </label>
+    <div style="color: red" th:if="${#fields.hasErrors('province')}" th:errors="*{province}"></div>
+    <label>
+        Quận <input type="text" name="district" th:field="*{district}">
+    </label><br>
+    <div style="color: red" th:if="${#fields.hasErrors('district')}" th:errors="*{district}"></div>
+    <label>
+        Phường <input type="text" name="ward" th:field="*{ward}">
+    </label>
+    <div style="color: red" th:if="${#fields.hasErrors('ward')}" th:errors="*{ward}"></div>
+    <label>
+        Số nhà, tên đường <input type="text" name="streetAddress" th:field="*{streetAddress}"/>
+    </label>
+    <div style="color: red" th:if="${#fields.hasErrors('streetAddress')}" th:errors="*{streetAddress}"></div>
+    <label>
+        <input type="submit" value="Chỉnh sửa"/>
+    </label><br>
+</form>
+<form th:action="@{/changePasswordPage}" method="post" th:object="${user}">
+    <label>
+        <input type="text" name="userID" th:field="*{userId}" hidden="hidden"/>
+    </label>
+    <label>
+        <input type="submit" name="" value="Đổi mật khẩu"/>
+    </label>
+</form>
+<p th:if="${successMessage}" th:utext="${successMessage}" style="color: red"></p>
+</body>
+</html>

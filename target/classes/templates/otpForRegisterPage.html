@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>OTP</title>
+    <title>OTP For Register</title>
 </head>
 <body>
 <h1>Please enter OTP</h1>
-<form th:action="@{/checkOTP}" method="post">
+<form th:action="@{/checkOTPForRegister}" method="post">
     <label> Your OTP <input type="text" name="enteredOTP"/></label>
     <label><input type="submit" th:value="Send"/></label>
 </form>
