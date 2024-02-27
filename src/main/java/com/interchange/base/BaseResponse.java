@@ -1,5 +1,6 @@
 package com.interchange.base;
 
+import com.interchange.entities.ImageBlog;
 import com.interchange.entities.MyResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +22,10 @@ public class BaseResponse {
 
 
     //File
-//    protected ResponseEntity<?> getResponseEntityFile(CustomerFile customerFile) {
-//        return ResponseEntity.status(200)
-//                .contentType(MediaType.parseMediaType(customerFile.getContentType()))
-//                .body(customerFile.getContent());
-//    }
-//
-//    protected CustomerFile convertFile(MultipartFile multipartFile, int cusId) {
-//        CustomerFile customerFile = new CustomerFile();
-//        try {
-//            customerFile.setFileName(multipartFile.getOriginalFilename());
-//            customerFile.setContentType(multipartFile.getContentType());
-//            customerFile.setContent(multipartFile.getBytes());
-//            customerFile.setCustomerId(cusId);
-//            return customerFile;
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    protected ResponseEntity<?> getResponseEntityFile(ImageBlog imageBlog) {
+        return ResponseEntity.status(200)
+                .contentType(MediaType.parseMediaType(imageBlog.getContentType()))
+                .body(imageBlog.getContent());
+    }
+
 }

@@ -35,4 +35,6 @@ public class Product {
     @JoinColumn(name = "proId")
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 
+    private int roomCategoryId;
+
 }

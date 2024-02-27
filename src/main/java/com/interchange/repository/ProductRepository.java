@@ -24,6 +24,21 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "    JOIN material m ON cm.material_id = m.material_id" ,nativeQuery = true)
     List<Map<String, Objects>> findAllProductDetailByRoomId(int roomId);
 
-    //List<Map>
+    @Query(value = "SELECT sp.supplier_product_id, p.pro_name, p.pro_description, ic.is_cus_length, ic.is_cus_width, ic.is_cus_height\n" +
+            "     ,up.unit_price\n" +
+            "FROM product p\n" +
+            "         JOIN category_material cm ON p.category_material_id = cm.category_material_id and p.pro_id = ?\n" +
+            "         JOIN material m ON cm.material_id = m.material_id\n" +
+            "         JOIN category_product cp ON cp.pro_category_id = cm.pro_category_id\n" +
+            "         JOIN is_customized ic ON cp.is_customized_id = ic.is_customized_id and ic.is_cus_length = true\n" +
+            "         JOIN supplier_product sp ON p.pro_id = sp.pro_id\n" +
+            "         JOIN supplier s ON sp.sup_id = s.sup_id and s.sup_id = ?\n" +
+            "         JOIN unit_price up ON sp.supplier_product_id = up.supplier_product_id;", nativeQuery = true)
+    Map<String, Objects> inputCustomProduct(int proId, int supId);
 
+    @Query(value = "SELECT p.pro_id, p.pro_name, ic.is_cus_height FROM product p\n" +
+            "    JOIN category_material cm ON p.pro_id = ? and p.category_material_id= cm.category_material_id\n" +
+            "    JOIN category_product cp ON cm.pro_category_id = cp.pro_category_id\n" +
+            "    JOIN is_customized ic ON cp.is_customized_id = ic.is_customized_id", nativeQuery = true)
+    Map<String, Object> isCustomizedByProId(int proId);
 }
