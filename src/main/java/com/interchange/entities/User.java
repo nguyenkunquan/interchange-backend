@@ -96,6 +96,11 @@ public class User implements Serializable {
             return false;
         }
     }
+<<<<<<< HEAD
+=======
+}
+
+>>>>>>> parent of a2c3a4d (change to response API,  add JWT and add some function)
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
