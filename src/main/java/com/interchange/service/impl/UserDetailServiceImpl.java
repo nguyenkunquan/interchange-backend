@@ -1,4 +1,4 @@
-package com.interchange.service;
+package com.interchange.service.impl;
 
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
@@ -32,20 +32,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
         grantList.add(authority);
 
-        return  new org.springframework.security.core.userdetails.User(user.getUserId(),
-                user.getPassword(), grantList);
+        return org.springframework.security.core.userdetails.
+                User.builder()
+                .username(user.getUserId()).
+                password(user.getPassword())
+                .authorities(grantList)
+                .build();
     }
-//    @Transactional
-//    public void updateInfoByID(User user) {
-//         if(userRepository.existsByUserId(user.getUserId())) {
-//             user.setFirstName(user.getFirstName());
-//             user.setLastName(user.getLastName());
-//             user.setPhoneNumber(user.getPhoneNumber());
-//             user.setEmail(user.getEmail());
-//             user.setBirthDate(user.getBirthDate());
-//             user.setProvince(user.getBirthDate());
-//         }
-//    }
-
 
 }

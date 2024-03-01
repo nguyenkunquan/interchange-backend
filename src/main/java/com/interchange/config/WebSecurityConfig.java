@@ -1,17 +1,21 @@
 package com.interchange.config;
 
-import com.interchange.service.UserDetailServiceImpl;
+import com.interchange.filter.JwtTokenFilter;
+import com.interchange.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -19,65 +23,47 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig  {
+    private final UserDetailServiceImpl userDetailService;
+    private final JwtTokenFilter jwtTokenFilter;
+
     @Autowired
-    private UserDetailServiceImpl userDetailService;
+    public WebSecurityConfig(UserDetailServiceImpl userDetailService, JwtTokenFilter jwtTokenFilter) {
+        this.userDetailService = userDetailService;
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailService);
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth)  {
         auth.authenticationProvider(authenticationProvider()); //Bien pass user nhap thanh bcrypt
     }
-
-
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN")
-                                .anyRequest().permitAll()
-<<<<<<< HEAD
-=======
-                )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/loginSuccess")
-                                .failureUrl("/login?error=true")
-                                .usernameParameter("username")
-                                .passwordParameter("password")
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/logoutSuccessfully")
-                )
-                .rememberMe(rememberMe ->
-                        rememberMe
-                                .tokenRepository(persistentTokenRepository())
-                                .tokenValiditySeconds(24 * 60 * 60)
-//                                .rememberMeParameter("remember-me")
-//                                .rememberMeCookieName("remember-me-cookies")
->>>>>>> parent of a2c3a4d (change to response API,  add JWT and add some function)
-                );
+                                .anyRequest().permitAll());
         return http.build();
     }
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        return new InMemoryTokenRepositoryImpl();
-    }
+
 }

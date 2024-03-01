@@ -80,8 +80,9 @@ public class User implements Serializable {
 
     public User() {
     }
+
     public boolean isOver18() {
-        if(birthDate == null || birthDate.isEmpty()) {
+        if (birthDate == null || birthDate.isEmpty()) {
             return false;
         }
         try {
@@ -91,19 +92,8 @@ public class User implements Serializable {
             Period age = Period.between(birthdateObj, currentDate);
 
             return age.getYears() >= 18;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
-<<<<<<< HEAD
-=======
-}
-
->>>>>>> parent of a2c3a4d (change to response API,  add JWT and add some function)
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "staffId")
-    private Set<Blog> blogs = new HashSet<>();
 }
