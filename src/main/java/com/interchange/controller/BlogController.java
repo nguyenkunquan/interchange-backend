@@ -1,5 +1,6 @@
 package com.interchange.controller;
 
+
 import com.interchange.entities.ImageBlog;
 import com.interchange.service.BlogService;
 import com.interchange.service.ImageBlogService;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -47,4 +50,15 @@ public class BlogController {
     public ResponseEntity<?> findByBlogIdAndIsThumbnailIsTrue(@RequestParam int blogId) {
         return imageBlogService.findByBlogIdAndIsThumbnailIsTrue(blogId);
     }
+
+    @GetMapping("/image")
+    public List<ResponseEntity<?>> getImageBlogByBlogId(@RequestParam int blogId){
+        return imageBlogService.getImageBlogByBlogId((blogId));
+    }
+
+    @GetMapping("/findById")
+    public ResponseEntity<?> findById(@RequestParam int blogId) {
+        return blogService.findById(blogId);
+    }
+
 }

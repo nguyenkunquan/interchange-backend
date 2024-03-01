@@ -29,8 +29,8 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> inputCustomProduct(int proId, int supId) {
-        return getResponseEntity(productRepository.inputCustomProduct(proId, supId));
+    public ResponseEntity<?> inputSupplierProduct(int proId, int supId) {
+        return getResponseEntity(productRepository.inputSupplierProduct(proId, supId));
     }
 
     @Override

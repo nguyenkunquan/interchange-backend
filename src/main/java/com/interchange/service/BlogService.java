@@ -12,4 +12,5 @@ public interface BlogService {
     ResponseEntity<?> getListBlogPagingBySearch(int page, String option, String search);
     ResponseEntity<?> deleteById(int postId);
     ResponseEntity<?> findAll();
+    ResponseEntity<?> findById(int blogId);
 }

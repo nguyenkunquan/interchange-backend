@@ -1,8 +1,11 @@
 package com.interchange.service.impl;
 
 import com.interchange.base.BaseResponse;
+import com.interchange.entities.Blog;
 import com.interchange.entities.ImageBlog;
+import com.interchange.repository.BlogRepository;
 import com.interchange.repository.ImageBlogRepository;
+import com.interchange.service.BlogService;
 import com.interchange.service.ImageBlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ public class ImageBlogServiceImpl extends BaseResponse implements ImageBlogServi
 
     @Autowired
     ImageBlogRepository imageBlogRepository;
+    @Autowired
+    BlogRepository blogRepository;
 
     private ImageBlog convertFile(MultipartFile multipartFile) {
         ImageBlog imageBlog = new ImageBlog();
@@ -33,10 +38,11 @@ public class ImageBlogServiceImpl extends BaseResponse implements ImageBlogServi
     @Override
     public ResponseEntity<?> save(int blogId, MultipartFile[] multipartFiles, int isThumbnailRadio) {
         ImageBlog imageBlog = new ImageBlog();
+        Blog blog = blogRepository.findById(blogId).get();
         int count = 1;
         for (MultipartFile multipartFile : multipartFiles) {
             imageBlog = convertFile(multipartFile);
-            imageBlog.setBlogId(blogId);
+            imageBlog.setBlog(blog);
             imageBlog.setThumbnail(false);
             if(count == isThumbnailRadio) imageBlog.setThumbnail(true);
             count++;
@@ -48,7 +54,7 @@ public class ImageBlogServiceImpl extends BaseResponse implements ImageBlogServi
     @Override
     public List<ResponseEntity<?>> getImageBlogByBlogId(int blogId) {
         try {
-            List<ImageBlog> imageBlogs = imageBlogRepository.findByBlogId(blogId);
+            List<ImageBlog> imageBlogs = imageBlogRepository.findByBlog_BlogId(blogId);
             List<ResponseEntity<?>> responseEntityList = new ArrayList<>();
             for (ImageBlog imageBlog: imageBlogs) {
                 responseEntityList.add(getResponseEntityFile(imageBlog));
@@ -62,7 +68,7 @@ public class ImageBlogServiceImpl extends BaseResponse implements ImageBlogServi
 
     @Override
     public List<ImageBlog> getListImageBlogByBlogId(int blogId) {
-        return imageBlogRepository.findByBlogId(blogId);
+        return imageBlogRepository.findByBlog_BlogId(blogId);
     }
 
     @Override
@@ -73,7 +79,7 @@ public class ImageBlogServiceImpl extends BaseResponse implements ImageBlogServi
 
     @Override
     public ResponseEntity<?> findByBlogIdAndIsThumbnailIsTrue(int blogId) {
-        return getResponseEntityFile(imageBlogRepository.findByBlogIdAndIsThumbnailIsTrue(blogId));
+        return getResponseEntityFile(imageBlogRepository.findByBlog_BlogIdAndIsThumbnailIsTrue((blogId)));
     }
 
 }

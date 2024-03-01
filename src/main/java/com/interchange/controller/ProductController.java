@@ -29,9 +29,9 @@ public class ProductController {
         return productService.findAllProductDetailByRoomId(roomId);
     }
 
-    @GetMapping("/inputCustomProduct")
-    public ResponseEntity<?> inputCustomProduct(@RequestParam int proId, int supId) {
-        return productService.inputCustomProduct(proId, supId);
+    @GetMapping("/inputSupplierProduct")
+    public ResponseEntity<?> inputSupplierProduct(@RequestParam int proId, int supId) {
+        return productService.inputSupplierProduct(proId, supId);
     }
 
     @GetMapping("isCustomized")
@@ -43,5 +43,4 @@ public class ProductController {
     public ResponseEntity<?> findAllProductByRoomCategoryId(@RequestParam int roomCategoryId) {
         return productService.findAllProductByRoomCategoryId(roomCategoryId);
     }
-
 }

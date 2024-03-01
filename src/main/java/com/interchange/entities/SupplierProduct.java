@@ -26,7 +26,5 @@ public class SupplierProduct {
     @JoinColumn(name = "supplierProductId")
     private Set<ProductDetail> productDetails = new HashSet<>();
 
-    @OneToOne(mappedBy = "supplierProduct", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private UnitPrice unitPrice;
+    private double unitPrice;
 }

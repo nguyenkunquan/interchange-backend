@@ -111,4 +111,9 @@ public class BlogServiceImpl extends BaseResponse implements BlogService {
         return getResponseEntity(blogRepository.findAll());
     }
 
+    @Override
+    public ResponseEntity<?> findById(int blogId) {
+        return getResponseEntity(blogRepository.findById(blogId));
+    }
+
 }

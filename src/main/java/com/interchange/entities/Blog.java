@@ -33,8 +33,7 @@ public class Blog {
     private boolean isDraft;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "blogId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "blog")
     private Set<ImageBlog> imageBlogs = new HashSet<>();
 
 }

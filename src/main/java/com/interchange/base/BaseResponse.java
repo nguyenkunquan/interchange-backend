@@ -2,9 +2,13 @@ package com.interchange.base;
 
 import com.interchange.entities.ImageBlog;
 import com.interchange.entities.MyResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BaseResponse {
     protected ResponseEntity<?> getResponseEntity(Object data) {
@@ -20,11 +24,14 @@ public class BaseResponse {
     }
 
 
-
     //File
     protected ResponseEntity<?> getResponseEntityFile(ImageBlog imageBlog) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(imageBlog.getContentType()));
+        headers.set("fileName", imageBlog.getFileName());
+        headers.set("isThumbnail", String.valueOf(imageBlog.isThumbnail()));
         return ResponseEntity.status(200)
-                .contentType(MediaType.parseMediaType(imageBlog.getContentType()))
+                .headers(headers)
                 .body(imageBlog.getContent());
     }
 

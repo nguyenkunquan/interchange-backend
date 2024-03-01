@@ -20,8 +20,12 @@ public class ImageBlog {
     @Lob
     @Column(length = 50000000)
     private byte[] content;
-    private int blogId;
+    //private int blogId;
     private boolean isThumbnail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "blogId")
+    private Blog blog;
 
 }
 
