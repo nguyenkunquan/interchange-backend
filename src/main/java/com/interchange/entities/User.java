@@ -80,20 +80,25 @@ public class User implements Serializable {
 
     public User() {
     }
+    public boolean isOver18() {
+        if(birthDate == null || birthDate.isEmpty()) {
+            return false;
+        }
+        try {
+            LocalDate birthdateObj = LocalDate.parse(birthDate);
 
+            LocalDate currentDate = LocalDate.now();
+            Period age = Period.between(birthdateObj, currentDate);
 
-<<<<<<< HEAD
-=======
-        return age.getYears() >= 18;
-}
+            return age.getYears() >= 18;
+        }
         catch (Exception ex) {
-        return false;
+            return false;
         }
-        }
+    }
 
-@JsonIgnore
-@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-@JoinColumn(name = "staffId")
-private Set<Blog> blogs = new HashSet<>();
->>>>>>> 6d874dbaead2ca19c6a09b27d5374236f291efea
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "staffId")
+    private Set<Blog> blogs = new HashSet<>();
 }
