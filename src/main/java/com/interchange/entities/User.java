@@ -84,18 +84,16 @@ public class User implements Serializable {
 
 <<<<<<< HEAD
 =======
-            return age.getYears() >= 18;
-        }
+        return age.getYears() >= 18;
+}
         catch (Exception ex) {
-            return false;
+        return false;
         }
-    }
+        }
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "staffId")
-    private Set<Blog> blogs = new HashSet<>();
+@JsonIgnore
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+@JoinColumn(name = "staffId")
+private Set<Blog> blogs = new HashSet<>();
 >>>>>>> 6d874dbaead2ca19c6a09b27d5374236f291efea
 }
-
-
