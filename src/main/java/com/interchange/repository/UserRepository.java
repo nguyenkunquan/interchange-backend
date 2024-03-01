@@ -1,5 +1,6 @@
 package com.interchange.repository;
 
+import com.interchange.dto.RegisterDTO;
 import com.interchange.entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,16 +18,17 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUserIdOrEmailOrPhoneNumber(String userId, String phoneNumber, String email);
     boolean existsByUserId(String username);
 
-    @Modifying
-    @Transactional
-    @Query("update User u set u.firstName= ?1, u.lastName= ?2, " +
-            "u.birthDate= ?3, u.province = ?4, u.district = ?5, " +
-            "u.ward = ?6, u.streetAddress = ?7 where u.userId=?8")
-    void setUserInfoById(String firstName, String lastName, String birthDate,
-                         String province, String district, String ward, String streetAddress, String userID);
+//    @Modifying
+//    @Transactional
+//    @Query("update User u set u.firstName= ?1, u.lastName= ?2, " +
+//            "u.birthDate= ?3, u.province = ?4, u.district = ?5, " +
+//            "u.ward = ?6, u.streetAddress = ?7 where u.userId=?8")
+//    void setUserInfoById(String firstName, String lastName, String birthDate,
+//                         String province, String district, String ward, String streetAddress, String userID);
 
     @Transactional
     @Modifying
     @Query("update User u set u.password= ?1 where u.userId= ?2")
-    void setPasswordById(String password, String userId);
+        void setPasswordById(String password, String userId);
+    User findFirstByUserId(String userId);
 }

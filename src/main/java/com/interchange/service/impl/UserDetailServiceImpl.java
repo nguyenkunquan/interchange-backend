@@ -1,26 +1,34 @@
-package com.interchange.service;
+package com.interchange.service.impl;
 
+import com.interchange.converter.UserConverter;
+import com.interchange.dto.ChangePasswordDTO;
+import com.interchange.dto.ForgetPasswordDTO;
+import com.interchange.dto.RegisterDTO;
+import com.interchange.entities.Role;
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-
     private final UserRepository userRepository;
-
-    public UserDetailServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,20 +40,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
         grantList.add(authority);
 
-        return  new org.springframework.security.core.userdetails.User(user.getUserId(),
-                user.getPassword(), grantList);
+        return org.springframework.security.core.userdetails.
+                User.builder()
+                .username(user.getUserId()).
+                password(user.getPassword())
+                .authorities(grantList)
+                .build();
     }
-//    @Transactional
-//    public void updateInfoByID(User user) {
-//         if(userRepository.existsByUserId(user.getUserId())) {
-//             user.setFirstName(user.getFirstName());
-//             user.setLastName(user.getLastName());
-//             user.setPhoneNumber(user.getPhoneNumber());
-//             user.setEmail(user.getEmail());
-//             user.setBirthDate(user.getBirthDate());
-//             user.setProvince(user.getBirthDate());
-//         }
-//    }
-
 
 }

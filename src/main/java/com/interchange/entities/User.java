@@ -77,22 +77,8 @@ public class User implements Serializable {
 
     public User() {
     }
-    public boolean isOver18() {
-        if(birthDate == null || birthDate.isEmpty()) {
-            return false;
-        }
-        try {
-            LocalDate birthdateObj = LocalDate.parse(birthDate);
 
-            LocalDate currentDate = LocalDate.now();
-            Period age = Period.between(birthdateObj, currentDate);
 
-            return age.getYears() >= 18;
-        }
-        catch (Exception ex) {
-            return false;
-        }
-    }
 }
 
 
