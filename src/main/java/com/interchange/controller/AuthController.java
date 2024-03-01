@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +42,14 @@ public class AuthController {
         try {
             String token = userService.login(loginDTO);
             return ResponseEntity.ok(token);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.badRequest().body("Incorrect password");
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body("Incorrect user");
         }
     }
     @PostMapping(value = "/registration")
     public ResponseEntity<?> registerUser( @Valid @RequestBody RegisterDTO registerDTO) {
-        try {
             if (Boolean.TRUE.equals(userRepository.existsByUserId(registerDTO.getUserId()))) {
                 return new ResponseEntity<>("User ID had in the system", HttpStatus.CONFLICT);
             }
@@ -65,9 +68,6 @@ public class AuthController {
             twilioOTPService.sendOTP(registerDTO.getPhoneNumber());
             registerDTO.setOtp(twilioOTPService.getGenerateOTP());
             return new ResponseEntity<>("Send OTP successfully" + " OTP: " + registerDTO.getOtp(), HttpStatus.OK);
-        } catch (ConstraintViolationException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
     }
     @PostMapping("/RegisterOTPAuthentication")
     public ResponseEntity<?> authenticateOTPForRegister(@RequestBody RegisterDTO registerDTO) {
@@ -102,7 +102,7 @@ public class AuthController {
             return new ResponseEntity<>("Can not authorize user", HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("ForgetPasswordOTPAuthentication")
+    @PutMapping("/forgetPasswordOTPAuthentication")
     public ResponseEntity<?> authenticateOTPForForgetPassword(@RequestBody ForgetPasswordDTO forgetPasswordDTO) {
         if (forgetPasswordDTO.getOtp() == null) {
             return new ResponseEntity<>("Fail to send OTP", HttpStatus.CONFLICT);
