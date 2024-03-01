@@ -11,21 +11,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RoomProduct {
+public class ImageBlog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roomProductId;
+    private int fileId;
+    private String fileName;
+    private String contentType;
+    @Lob
+    @Column(length = 50000000)
+    private byte[] content;
+    private int blogId;
+    private boolean isThumbnail;
 
-//    @ManyToOne
-//    private Room room;
-//
-//    @ManyToOne
-//    private ProductDetail productDetail;
-
-    private int roomId;
-    private int proDetailId;
-
-    private int quantity;
-    @Column(nullable = true)
-    private double totalPrice;
 }
+

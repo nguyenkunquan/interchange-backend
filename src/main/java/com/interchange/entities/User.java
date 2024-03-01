@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,8 @@ import jakarta.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @ToString
@@ -79,6 +82,20 @@ public class User implements Serializable {
     }
 
 
+<<<<<<< HEAD
+=======
+            return age.getYears() >= 18;
+        }
+        catch (Exception ex) {
+            return false;
+        }
+    }
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "staffId")
+    private Set<Blog> blogs = new HashSet<>();
+>>>>>>> 6d874dbaead2ca19c6a09b27d5374236f291efea
 }
 
 

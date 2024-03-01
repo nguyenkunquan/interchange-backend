@@ -11,21 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RoomProduct {
+public class UnitPrice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roomProductId;
+    private int supplierProductId;
+    private double unitPrice;
 
-//    @ManyToOne
-//    private Room room;
-//
-//    @ManyToOne
-//    private ProductDetail productDetail;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "supplier_product_id")
+    private SupplierProduct supplierProduct;
 
-    private int roomId;
-    private int proDetailId;
-
-    private int quantity;
-    @Column(nullable = true)
-    private double totalPrice;
 }

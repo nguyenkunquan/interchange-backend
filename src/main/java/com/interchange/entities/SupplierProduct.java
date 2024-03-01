@@ -25,4 +25,8 @@ public class SupplierProduct {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supplierProductId")
     private Set<ProductDetail> productDetails = new HashSet<>();
+
+    @OneToOne(mappedBy = "supplierProduct", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UnitPrice unitPrice;
 }

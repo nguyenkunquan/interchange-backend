@@ -24,4 +24,6 @@ public class CategoryProduct {
     @JoinColumn(name = "proCategoryId")
     private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
 
+    private int isCustomizedId;
+
 }

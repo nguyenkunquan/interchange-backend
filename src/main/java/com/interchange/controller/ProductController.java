@@ -4,10 +4,7 @@ import com.interchange.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("*")
@@ -17,14 +14,34 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<?> save() {
         return null;
     }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<?> getAll(){
-        return productService.getAll();
+    @GetMapping()
+    public ResponseEntity<?> findAll(){
+        return productService.findAll();
+    }
+
+    @GetMapping("/productDetail")
+    public ResponseEntity<?> findAllProductDetailByRoomId(@RequestParam int roomId) {
+        return productService.findAllProductDetailByRoomId(roomId);
+    }
+
+    @GetMapping("/inputCustomProduct")
+    public ResponseEntity<?> inputCustomProduct(@RequestParam int proId, int supId) {
+        return productService.inputCustomProduct(proId, supId);
+    }
+
+    @GetMapping("isCustomized")
+    public ResponseEntity<?> isCustomizedById(@RequestParam int proId) {
+        return productService.isCustomizedByProId(proId);
+    }
+
+    @GetMapping("/roomCategory")
+    public ResponseEntity<?> findAllProductByRoomCategoryId(@RequestParam int roomCategoryId) {
+        return productService.findAllProductByRoomCategoryId(roomCategoryId);
     }
 
 }
