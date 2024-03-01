@@ -48,28 +48,6 @@ public class WebSecurityConfig  {
                         authorizeRequests
                                 .requestMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN")
                                 .anyRequest().permitAll()
-                )
-                .formLogin(formLogin ->
-                        formLogin
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/loginSuccess")
-                                .failureUrl("/login?error=true")
-                                .usernameParameter("username")
-                                .passwordParameter("password")
-                                .permitAll()
-                )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/logoutSuccessfully")
-                )
-                .rememberMe(rememberMe ->
-                        rememberMe
-                                .tokenRepository(persistentTokenRepository())
-                                .tokenValiditySeconds(24 * 60 * 60)
-//                                .rememberMeParameter("remember-me")
-//                                .rememberMeCookieName("remember-me-cookies")
                 );
         return http.build();
     }
