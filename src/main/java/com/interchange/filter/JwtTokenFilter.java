@@ -38,14 +38,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response); //enable bypass
                 return;
             }
-            final String authHeader = request.getHeader("Authorization");
-            if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-            }
-            if (authHeader != null
+
+                final String authHeader = request.getHeader("Authorization");
+                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                }
+                if (authHeader != null
                     && authHeader.startsWith("Bearer ")) {
                 final String token = authHeader.substring(7);
-                String userId = jwtTokenUtil.extractUserId(token);
+                final String userId = jwtTokenUtil.extractUserId(token);
                 if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailService.loadUserByUsername(userId);
                     if (jwtTokenUtil.validateToken(token, userDetails)) {
@@ -57,6 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     }
                 }
             }
+
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
@@ -66,7 +68,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final List<Pair<String, String>> bypassTokens = Arrays.asList(
                 Pair.of("/auth/login", "POST"),
                 Pair.of("/auth/registration", "POST"),
-                Pair.of("/auth/profile/", "GET")
+                Pair.of("/auth/forgetPassword", "POST"),
+                Pair.of("/auth/forgetPasswordOTPAuthentication","PUT")
         );
         for (Pair<String, String> bypassToken : bypassTokens) {
             if(request.getServletPath().contains(bypassToken.getFirst()) &&

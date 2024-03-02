@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
                         loginDTO.getUserIdOrPhoneNumberOrEmail(),
                         loginDTO.getUserIdOrPhoneNumberOrEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User can't found"));
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginDTO.getUserIdOrPhoneNumberOrEmail(),loginDTO.getPassword()
         );

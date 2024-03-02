@@ -32,7 +32,7 @@ public class TwilioOTPService {
     }
 
     public boolean verifyOTP(String enteredOTP) {
-        return generateOTP.equals(enteredOTP);
+        return  this.getGenerateOTP().equals(enteredOTP);
     }
     private String generateOTP() {
         return new DecimalFormat("000000").format(random.nextInt(999999));
