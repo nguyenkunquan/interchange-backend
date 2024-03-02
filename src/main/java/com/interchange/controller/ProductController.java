@@ -34,11 +34,6 @@ public class ProductController {
         return productService.inputSupplierProduct(proId, supId);
     }
 
-    @GetMapping("isCustomized")
-    public ResponseEntity<?> isCustomizedById(@RequestParam int proId) {
-        return productService.isCustomizedByProId(proId);
-    }
-
     @GetMapping("/roomCategory")
     public ResponseEntity<?> findAllProductByRoomCategoryId(@RequestParam int roomCategoryId) {
         return productService.findAllProductByRoomCategoryId(roomCategoryId);

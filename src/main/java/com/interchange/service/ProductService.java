@@ -7,6 +7,5 @@ public interface ProductService {
 
     ResponseEntity<?> findAllProductDetailByRoomId(int roomId);
     ResponseEntity<?> inputSupplierProduct(int proId, int supId);
-    ResponseEntity<?> isCustomizedByProId(int proId);
     ResponseEntity<?> findAllProductByRoomCategoryId(int roomCategoryId);
 }

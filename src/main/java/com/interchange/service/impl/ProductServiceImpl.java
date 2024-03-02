@@ -34,17 +34,6 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
     }
 
     @Override
-    public ResponseEntity<?> isCustomizedByProId(int proId) {
-        Map<String, Object> map = productRepository.isCustomizedByProId(proId);
-        boolean check = false;
-        if (map.get("is_cus_height").toString().equals("true")) {
-            check = true;
-            return getResponseEntity(check);
-        }
-        else return getResponseEntity(check);
-    }
-
-    @Override
     public ResponseEntity<?> findAllProductByRoomCategoryId(int roomCategoryId) {
         return getResponseEntity(categoryRoomRepository.findAllProductByRoomCategoryId(roomCategoryId));
     }

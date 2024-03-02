@@ -25,7 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Map<String, Objects>> findAllProductDetailByRoomId(int roomId);
 
     @Query(value = "SELECT sp.supplier_product_id, p.pro_name, p.pro_description, pd.pro_length, pd.pro_width, pd.pro_height, ic.is_cus_length, ic.is_cus_width, ic.is_cus_height\n" +
-            "     ,sp.unit_price\n" +
+            "     , pd.pro_price, sp.unit_price\n" +
             "FROM product p\n" +
             "         JOIN category_material cm ON p.category_material_id = cm.category_material_id and p.pro_id = ?\n" +
             "         JOIN material m ON cm.material_id = m.material_id\n" +
