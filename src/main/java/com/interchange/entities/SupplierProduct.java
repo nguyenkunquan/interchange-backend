@@ -19,11 +19,15 @@ public class SupplierProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int supplierProductId;
 
-    private int supId;
-    private int proId;
+    @ManyToOne
+    @JoinColumn(name = "supId")
+    private Supplier supplier;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplierProductId")
+    @ManyToOne
+    @JoinColumn(name = "proId")
+    private Product product;
+
+    @OneToMany(mappedBy = "supplierProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ProductDetail> productDetails = new HashSet<>();
 
     private double unitPrice;

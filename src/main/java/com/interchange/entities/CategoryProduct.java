@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +21,6 @@ public class CategoryProduct {
     private int proCategoryId;
     private String categoryName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proCategoryId")
+    @OneToMany(mappedBy = "categoryProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
-
-    private int isCustomizedId;
-
 }

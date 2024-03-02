@@ -1,7 +1,9 @@
 package com.interchange.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +26,6 @@ public class Project {
     private int projId;
     private String projName;
     private String projDes;
-    private int projCategoryId;
     private String projAddress;
     private int projProcess;
 
@@ -39,8 +40,16 @@ public class Project {
 
     private double projCost;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "projId")
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "projCategoryId")
+    private CategoryProject categoryProject;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
     private Set<Room> rooms = new HashSet<>();
 
     @JsonIgnoreProperties("project")

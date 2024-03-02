@@ -26,7 +26,6 @@ public class Supplier {
     private String supAddress;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "supId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supplier")
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 }

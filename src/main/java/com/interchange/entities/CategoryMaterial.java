@@ -18,10 +18,15 @@ public class CategoryMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryMaterialId;
-    private int proCategoryId;
-    private int materialId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryMaterialId")
+    @ManyToOne
+    @JoinColumn(name = "proCategoryId")
+    private CategoryProduct categoryProduct;
+
+    @ManyToOne
+    @JoinColumn(name = "materialId")
+    private Material material;
+
+    @OneToMany(mappedBy = "categoryMaterial", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> products = new HashSet<>();
 }

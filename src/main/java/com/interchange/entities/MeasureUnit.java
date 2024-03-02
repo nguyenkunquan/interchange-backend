@@ -15,17 +15,16 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class IsCustomized {
+public class MeasureUnit {
     @Id
-    private int isCustomizedId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int measureUnitId;
+    private String measureUnitName;
     private boolean isCusLength;
     private boolean isCusWidth;
     private boolean isCusHeight;
 
-    //    @OneToOne(mappedBy = "isCustomized")
-    //    private CategoryProduct categoryProduct;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "isCustomizedId")
-    private Set<CategoryProduct> categoryProducts = new HashSet<>();
+    @OneToMany(mappedBy = "measureUnit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Product> products = new HashSet<>();
 }

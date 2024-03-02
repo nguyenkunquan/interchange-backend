@@ -16,14 +16,13 @@ public class RoomProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomProductId;
 
-//    @ManyToOne
-//    private Room room;
-//
-//    @ManyToOne
-//    private ProductDetail productDetail;
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
 
-    private int roomId;
-    private int proDetailId;
+    @ManyToOne
+    @JoinColumn(name = "proDetailId")
+    private ProductDetail productDetail;
 
     private int quantity;
     @Column(nullable = true)

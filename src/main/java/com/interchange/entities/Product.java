@@ -21,20 +21,41 @@ public class Product {
     private int proId;
     @Column(unique = true)
     private String proName;
-    private int categoryMaterialId;
     private String proDescription;
     private String proColor;
 
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "categoryMaterialId")
+    private CategoryMaterial categoryMaterial;
+
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proId")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ImageProduct> imageProducts = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proId")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 
-    private int roomCategoryId;
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "roomCategoryId")
+    private CategoryRoom categoryRoom;
 
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "measureUnitId")
+    private MeasureUnit measureUnit;
 }

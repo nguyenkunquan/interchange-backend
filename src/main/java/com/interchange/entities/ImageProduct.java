@@ -20,6 +20,9 @@ public class ImageProduct {
     @Lob
     @Column(length = 50000000)
     private byte[] content;
-    private int proId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "proId")
+    private Product product;
 
 }

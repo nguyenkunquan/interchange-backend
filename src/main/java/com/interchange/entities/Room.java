@@ -20,20 +20,40 @@ public class Room {
     private int roomId;
     private String roomName;
     private String roomDescription;
-    private int roomCategoryId;
-    private int styleCategoryId;
     private double roomLength;
     private double roomWidth;
     private double roomHeight;
-    private int projId;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomId")
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "projId")
+    private Project project;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "room")
     private Set<ImageRoom> imageRooms = new HashSet<>();
 
-//    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<RoomProduct> roomProducts = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomId")
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "roomCategoryId")
+    private CategoryRoom categoryRoom;
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "styleCategoryId")
+    private CategoryStyle categoryStyle;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RoomProduct> roomProducts = new HashSet<>();
 }

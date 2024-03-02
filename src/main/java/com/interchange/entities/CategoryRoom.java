@@ -21,12 +21,11 @@ public class CategoryRoom {
     private int roomCategoryId;
     private String categoryName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomCategoryId")
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryRoom")
     private Set<Room> rooms = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "roomCategoryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "categoryRoom")
     private Set<Product> products = new HashSet<>();
 }

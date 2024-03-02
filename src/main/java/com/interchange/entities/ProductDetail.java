@@ -22,11 +22,16 @@ public class ProductDetail {
     private double proWidth;
     private double proHeight;
     private double proPrice;
-    private int supplierProductId;
 
-//    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<RoomProduct> roomProducts = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "proDetailId")
+    @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RoomProduct> roomProducts = new HashSet<>();
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "supplierProductId")
+    private SupplierProduct supplierProduct;
 }

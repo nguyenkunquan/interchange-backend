@@ -20,7 +20,6 @@ public class CategoryProject {
     private int projCategoryId;
     private String categoryName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "projCategoryId")
+    @OneToMany(mappedBy = "categoryProject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Project> projects = new HashSet<>();
 }

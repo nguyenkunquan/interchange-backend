@@ -20,8 +20,7 @@ public class Material {
     private int materialId;
     private String materialName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "materialId")
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
 
 }

@@ -20,7 +20,6 @@ public class CategoryStyle {
     private int styleCategoryId;
     private String styleName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "styleCategoryId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoryStyle")
     private Set<Room> rooms = new HashSet<>();
 }

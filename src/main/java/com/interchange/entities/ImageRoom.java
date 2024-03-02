@@ -20,5 +20,13 @@ public class ImageRoom {
     @Lob
     @Column(length = 50000000)
     private byte[] content;
-    private int roomId;
+
+    @ManyToOne(
+            cascade = {
+                    CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH
+            }, fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "roomId")
+    private Room room;
 }
