@@ -22,5 +22,4 @@ public class Material {
 
     @OneToMany(mappedBy = "material", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
-
 }

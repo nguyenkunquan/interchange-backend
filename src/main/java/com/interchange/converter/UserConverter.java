@@ -1,6 +1,7 @@
 package com.interchange.converter;
 
-import com.interchange.dto.RegisterDTO;
+import com.interchange.dto.AuthDTO.RegisterDTO;
+import com.interchange.dto.AuthDTO.UpdateUserDTO;
 import com.interchange.entities.Role;
 import com.interchange.entities.User;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,19 @@ public class UserConverter {
         user.setStreetAddress(registerDTO.getStreetAddress());
         return user;
     }
+    public User toUser(UpdateUserDTO updateUserDTO, User user) {
+        user.setEmail(updateUserDTO.getEmail());
+        user.setPhoneNumber(updateUserDTO.getPhoneNumber());
+        user.setFirstName(updateUserDTO.getFirstName());
+        user.setLastName(updateUserDTO.getLastName());
+        user.setBirthDate(updateUserDTO.getBirthDate());
+        user.setProvince(updateUserDTO.getProvince());
+        user.setDistrict(updateUserDTO.getDistrict());
+        user.setWard(updateUserDTO.getWard());
+        user.setStreetAddress(updateUserDTO.getStreetAddress());
+        return user;
+    }
+
 
     public RegisterDTO toRegisterDTO(User user) {
         RegisterDTO registerDTO = new RegisterDTO();

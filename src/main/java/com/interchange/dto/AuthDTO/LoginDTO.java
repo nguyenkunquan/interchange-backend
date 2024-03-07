@@ -1,4 +1,4 @@
-package com.interchange.dto;
+package com.interchange.dto.AuthDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

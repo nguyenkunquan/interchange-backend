@@ -1,4 +1,4 @@
-package com.interchange.dto;
+package com.interchange.dto.AuthDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -9,13 +9,11 @@ import org.hibernate.validator.constraints.Length;
 import java.io.Serializable;
 
 @Data @NoArgsConstructor @AllArgsConstructor
-public class ChangePasswordDTO implements Serializable {
-    @Length(max = 10, message = "The User ID must be less than 10 characters")
-    @NotBlank(message = "The User ID can not null")
-    private String userId;
+public class ChangePasswordDTO {
     @NotBlank(message = "The old password can not null")
     private String oldPassword;
     @NotBlank(message = "The new password can not null")
+    @Length(min = 8, message = "Password must be at least 8 characters")
     private String newPassword;
     @NotBlank(message = "The re password can not null")
     private String reNewPassword;

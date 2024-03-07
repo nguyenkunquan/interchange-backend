@@ -1,6 +1,6 @@
 //package com.interchange.controller;
 //import com.interchange.config.TwilioConfig;
-//import com.interchange.dto.ChangePasswordDTO;
+//import com.interchange.dto.AuthDTO.ChangePasswordDTO;
 //import com.interchange.entities.Role;
 //import com.interchange.entities.User;
 //import com.interchange.repository.UserRepository;

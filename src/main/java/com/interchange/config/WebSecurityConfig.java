@@ -61,9 +61,14 @@ public class WebSecurityConfig  {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN")
-                                .anyRequest().permitAll());
-        return http.build();
+                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/forgetPassword").permitAll()
+                                .requestMatchers("/api/auth/forgetPasswordOTPAuthentication").permitAll()
+                                .requestMatchers("/api/auth/registration").permitAll()
+                                .requestMatchers("/api/auth/RegisterOTPAuthentication").permitAll()
+                                .anyRequest().authenticated());
+
+    return http.build();
     }
 
 }

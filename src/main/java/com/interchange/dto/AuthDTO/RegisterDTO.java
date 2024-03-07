@@ -1,4 +1,4 @@
-package com.interchange.dto;
+package com.interchange.dto.AuthDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +15,7 @@ public class RegisterDTO {
     @NotBlank(message = "The User ID can not null")
     private String userId;
     @NotBlank(message = "The password can not null")
+    @Length(min = 8, message = "Password must be at least 8 characters")
     private String password;
     @NotBlank(message = "The re password can not null")
     private String rePassword;
