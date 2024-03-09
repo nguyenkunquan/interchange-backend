@@ -1,4 +1,4 @@
-package com.interchange.dto.ManageCustomerDTO;
+package com.interchange.dto.ManageCustomerAndStaffDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Data
-public class AddCustomerDTO {
+public class AddCustomerAndStaffDTO {
     @Length(max = 10, message = "The User ID must be less than 10 characters")
     @NotBlank(message = "The User ID can not null")
     private String userId;

@@ -6,22 +6,20 @@ import com.interchange.dto.ManageCustomerAndStaffDTO.UpdateCustomerAndStaffDTO;
 import com.interchange.entities.Role;
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
-import com.interchange.service.CustomerService;
+import com.interchange.service.StaffService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
-
+public class StaffServiceImpl implements StaffService {
     private final UserRepository userRepository;
 
     private final CustomerAndStaffConverter customerAndStaffConverter;
     private final PasswordEncoder passwordEncoder;
-    public CustomerServiceImpl(UserRepository userRepository,
+    public StaffServiceImpl(UserRepository userRepository,
                                CustomerAndStaffConverter customerAndStaffConverter,
                                PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -29,24 +27,27 @@ public class CustomerServiceImpl implements CustomerService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public List<User> getCustomers() {
-        return userRepository.getAllByRole(Role.CUSTOMER);
+    public List<User> getStaffs() {
+        return userRepository.getAllByRole(Role.STAFF);
     }
+
     @Override
-    public ResponseEntity<?> addCustomer(AddCustomerAndStaffDTO addCustomerAndStaffDTO) {
+    public ResponseEntity<?> addStaff(AddCustomerAndStaffDTO addCustomerAndStaffDTO) {
         User user = customerAndStaffConverter.toUser(addCustomerAndStaffDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.CUSTOMER);
+        user.setRole(Role.STAFF);
         userRepository.save(user);
         return new ResponseEntity<>("Register successfully", HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<?> updateCustomer(String userId, UpdateCustomerAndStaffDTO updateCustomerAndStaffDTO) {
+    public ResponseEntity<?> updateStaff(String userId, UpdateCustomerAndStaffDTO updateCustomerAndStaffDTO) {
         User user = userRepository.findFirstByUserId(userId);
         user = customerAndStaffConverter.toUser(updateCustomerAndStaffDTO, user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return new ResponseEntity<>("Update successfully!", HttpStatus.OK);
     }
+
+
 }

@@ -4,6 +4,7 @@ import com.interchange.dto.ManageCustomerAndStaffDTO.AddCustomerAndStaffDTO;
 import com.interchange.dto.ManageCustomerAndStaffDTO.UpdateCustomerAndStaffDTO;
 import com.interchange.repository.UserRepository;
 import com.interchange.service.CustomerService;
+import com.interchange.service.StaffService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,20 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @RestController
-@RequestMapping("/api/manageCustomer")
-public class ManageCustomerController {
+@RequestMapping("/api/manage-staff")
+public class ManageStaffController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CustomerService customerService;
-    @GetMapping("/showCustomerList")
+    private StaffService staffService;
+    @GetMapping("/showStaffList")
     public ResponseEntity<?> getCustomers() {
-        return ResponseEntity.ok(customerService.getCustomers());
+        return ResponseEntity.ok(staffService.getStaffs());
     }
-    @PostMapping("/addCustomer")
-    public  ResponseEntity<?> addCustomer(@Valid @RequestBody AddCustomerAndStaffDTO addCustomerAndStaffDTO) {
+    @PostMapping("/addStaff")
+    public  ResponseEntity<?> addStaff(@Valid @RequestBody AddCustomerAndStaffDTO addCustomerAndStaffDTO) {
         if (Boolean.TRUE.equals(userRepository.existsByUserId(addCustomerAndStaffDTO.getUserId()))) {
             return new ResponseEntity<>("User ID had in the system", HttpStatus.CONFLICT);
         }
@@ -41,15 +41,15 @@ public class ManageCustomerController {
         if(!addCustomerAndStaffDTO.isOver18()) {
             return new ResponseEntity<>("You must more than 18 years old", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(customerService.addCustomer(addCustomerAndStaffDTO));
+        return ResponseEntity.ok(staffService.addStaff(addCustomerAndStaffDTO));
     }
-    @PutMapping("/updateCustomer/{userId}")
-    public  ResponseEntity<?> updateCustomer(@PathVariable("userId") String userId,
+    @PutMapping("/updateStaff/{userId}")
+    public  ResponseEntity<?> updateStaff(@PathVariable("userId") String userId,
                                              @Valid @RequestBody UpdateCustomerAndStaffDTO updateCustomerAndStaffDTO) {
         if(!updateCustomerAndStaffDTO.isOver18()) {
             return new ResponseEntity<>("You must more than 18 years old", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(customerService.updateCustomer(userId, updateCustomerAndStaffDTO));
+        return ResponseEntity.ok(staffService.updateStaff(userId, updateCustomerAndStaffDTO));
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

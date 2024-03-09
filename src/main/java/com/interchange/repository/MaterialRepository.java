@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, Integer> {
     Material findFirstByMaterialId(int materialId);
+
+    Material findMaterialByMaterialName(String materialName);
 }

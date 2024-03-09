@@ -1,10 +1,9 @@
 package com.interchange.repository;
 
-import com.interchange.entities.Supplier;
+import com.interchange.entities.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SupplierRepository extends JpaRepository<Supplier, Integer> {
-    Supplier getFirstBySupId(int supId);
+public interface ProductDetailRepository extends JpaRepository<ProductDetail, Integer> {
 }
