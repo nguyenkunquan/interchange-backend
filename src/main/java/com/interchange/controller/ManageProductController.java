@@ -4,9 +4,16 @@ import com.interchange.dto.ProductDTO.AddProductDTO;
 import com.interchange.dto.SupplierProductDTO.UpdateUnitPriceDTO;
 import com.interchange.service.ProductService;
 import com.interchange.service.SupplierProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -21,7 +28,7 @@ public class ManageProductController {
         return productService.listProduct();
     }
     @PostMapping("/addProduct")
-    public ResponseEntity<?> addProduct(@RequestBody AddProductDTO addProductDTO) {
+    public ResponseEntity<?> addProduct(@Valid @RequestBody AddProductDTO addProductDTO) {
         return productService.AddProduct(addProductDTO);
     }
     @GetMapping("/listSupplierProduct/{proId}")
@@ -31,6 +38,17 @@ public class ManageProductController {
     @PutMapping("/updateUnitPrice/{supProId}")
     public ResponseEntity<?> updateUnitPrice(@PathVariable int supProId, @RequestBody UpdateUnitPriceDTO updateUnitPriceDTO) {
         return supplierProductService.updateUnitPrice(supProId, updateUnitPriceDTO);
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
 }
