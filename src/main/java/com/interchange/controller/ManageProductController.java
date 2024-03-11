@@ -1,7 +1,6 @@
 package com.interchange.controller;
 
 import com.interchange.dto.ProductDTO.AddProductDTO;
-import com.interchange.dto.SupplierProductDTO.UpdateUnitPriceDTO;
 import com.interchange.service.ProductService;
 import com.interchange.service.SupplierProductService;
 import jakarta.validation.Valid;
@@ -34,10 +33,6 @@ public class ManageProductController {
     @GetMapping("/listSupplierProduct/{proId}")
     public ResponseEntity<?> listSupplierProduct(@PathVariable int proId) {
         return supplierProductService.listSupplierProduct(proId);
-    }
-    @PutMapping("/updateUnitPrice/{supProId}")
-    public ResponseEntity<?> updateUnitPrice(@PathVariable int supProId, @RequestBody UpdateUnitPriceDTO updateUnitPriceDTO) {
-        return supplierProductService.updateUnitPrice(supProId, updateUnitPriceDTO);
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
