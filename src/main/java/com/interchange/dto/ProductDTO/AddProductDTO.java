@@ -1,8 +1,11 @@
 package com.interchange.dto.ProductDTO;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
+import java.util.Map;
 
 @Data
 public class AddProductDTO {
@@ -12,13 +15,13 @@ public class AddProductDTO {
     private String productDescription;
     @NotBlank(message = "The product color can not null")
     private String productColor;
-    @NotBlank(message = "The Measure Unit ID can not null")
+    @Min(value = 1, message = "The measure unit Id must be greater than or equal to 0")
     private int measureUnitId;
-    @NotBlank(message = "The product length can not null")
+    @Min(value = 0, message = "The product length must be greater than or equal to 0")
     private double length;
-    @NotBlank(message = "The product height can not null")
+    @Min(value = 0, message = "The product height must be greater than or equal to 0")
     private double height;
-    @NotBlank(message = "The product width can not null")
+    @Min(value = 0, message = "The product width must be greater than or equal to 0")
     private double width;
     @NotBlank(message = "The category name can not null")
     private String categoryName;
@@ -26,10 +29,6 @@ public class AddProductDTO {
     private String materialName;
     @NotBlank(message = "The room category can not null")
     private String roomCategoryName;
-    @NotBlank(message = "The Unit Price of An Cuong supplier can not null")
-    private double unitPriceAnCuongSupplier;
-    @NotBlank(message = "The Unit Price of Thanh Thuy supplier can not null")
-    private double unitPriceThanhThuySupplier;
-    @NotBlank(message = "The Unit Price of Moc Phat supplier can not null")
-    private double unitPriceSupplerMocPhatSupplier;
+    @NotEmpty(message = "The unit prices map can not be null or empty")
+    private Map<Integer, Double> unitPrices;
 }

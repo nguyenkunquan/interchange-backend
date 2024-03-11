@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl extends BaseResponse implements ProductService {
@@ -98,37 +99,31 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
     }
 
     private void createAndSaveSupplierProducts(AddProductDTO addProductDTO, Product product,List<SupplierProduct> supplierProducts) {
-        for(int i =1; i <= 3; i++) {
+        for(Map.Entry<Integer, Double> entry : addProductDTO.getUnitPrices().entrySet()) {
             SupplierProduct supplierProduct = new SupplierProduct();
-            supplierProduct.setUnitPrice(getUnitPrice(addProductDTO, i));
+            supplierProduct.setUnitPrice(entry.getValue());
             supplierProduct.setProduct(product);
-            supplierProduct.setSupplier(supplierRepository.getFirstBySupId(i));
+            supplierProduct.setSupplier(supplierRepository.getFirstBySupId(entry.getKey()));
             supplierProductRepository.save(supplierProduct);
             supplierProducts.add(supplierProduct);
         }
     }
-    private double getUnitPrice(AddProductDTO addProductDTO, int i) {
-        switch (i) {
-            case 1: return addProductDTO.getUnitPriceAnCuongSupplier();
-            case 2: return addProductDTO.getUnitPriceThanhThuySupplier();
-            case 3: return addProductDTO.getUnitPriceSupplerMocPhatSupplier();
-            default: return 0;
-        }
-    }
     private void createAndSaveProductDetails(AddProductDTO addProductDTO, Product product, List<SupplierProduct> supplierProducts) {
-        for (int i = 1; i <= 3; i++) {
+        int i = 0;
+        for (Map.Entry<Integer, Double> entry : addProductDTO.getUnitPrices().entrySet()) {
             ProductDetail productDetail = new ProductDetail();
             productDetail.setProLength(addProductDTO.getLength());
             productDetail.setProHeight(addProductDTO.getHeight());
             productDetail.setProWidth(addProductDTO.getWidth());
-            productDetail.setProPrice(calculatePrice(addProductDTO, product, i));
-            productDetail.setSupplierProduct(supplierProducts.get(i-1));
+            productDetail.setProPrice(calculatePrice(addProductDTO, product, entry.getKey()));
+            productDetail.setSupplierProduct(supplierProducts.get(i));
             productDetailRepository.save(productDetail);
+            i++;
         }
     }
 
     private double calculatePrice(AddProductDTO addProductDTO, Product product, int supplierId) {
-        double unitPrice = getUnitPrice(addProductDTO, supplierId);
+        double unitPrice = addProductDTO.getUnitPrices().get(supplierId);
         if(product.getMeasureUnit().getMeasureUnitName().equals("Mét Dài")) {
             return addProductDTO.getLength() * unitPrice;
         } else if (product.getMeasureUnit().getMeasureUnitName().equals("Mét Vuông")) {
