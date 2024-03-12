@@ -18,5 +18,4 @@ public class SupplierProductServiceImpl extends BaseResponse implements Supplier
     public ResponseEntity<?> listSupplierProduct(int proId) {
         return getResponseEntity(supplierProductRepository.listSupplierProduct(proId));
     }
-
 }

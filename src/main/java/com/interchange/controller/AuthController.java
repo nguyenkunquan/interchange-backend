@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*") // Allow all origins
 @RequestMapping("api/auth")
 public class AuthController {
     @Autowired
@@ -62,7 +63,7 @@ public class AuthController {
             }
             twilioOTPService.sendOTP(registerDTO.getPhoneNumber());
             registerDTO.setOtp(twilioOTPService.getGenerateOTP());
-            return new ResponseEntity<>("Send OTP successfully" + " OTP: " + registerDTO.getOtp(), HttpStatus.OK);
+            return new ResponseEntity<>(registerDTO, HttpStatus.OK);
     }
     @PostMapping("/RegisterOTPAuthentication")
     public ResponseEntity<?> authenticateOTPForRegister(@RequestBody RegisterDTO registerDTO) {

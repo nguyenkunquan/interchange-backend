@@ -54,10 +54,14 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public ResponseEntity<?> registerUser(RegisterDTO registerDTO) {
-        User user = userConverter.toUser(registerDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return new ResponseEntity<>("Register successfully", HttpStatus.OK);
+        try {
+            User user = userConverter.toUser(registerDTO);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return new ResponseEntity<>("Register successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
     @Override
     public ResponseEntity<?> updateUser(String userId, UpdateUserDTO updateUserDTO) {
