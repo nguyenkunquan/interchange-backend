@@ -64,9 +64,8 @@ public class WebSecurityConfig  {
                                 .requestMatchers("/api/auth/forgetPassword").permitAll()
                                 .requestMatchers("/api/auth/forgetPasswordOTPAuthentication").permitAll()
                                 .requestMatchers("/api/auth/registration").permitAll()
-                                .requestMatchers("/api/auth/RegisterOTPAuthentication").permitAll()
+                                .requestMatchers("/api/auth/registerOTPAuthentication").permitAll()
                                 .anyRequest().authenticated());
-
     return http.build();
     }
 

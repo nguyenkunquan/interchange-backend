@@ -65,7 +65,7 @@ public class AuthController {
             registerDTO.setOtp(twilioOTPService.getGenerateOTP());
             return new ResponseEntity<>(registerDTO, HttpStatus.OK);
     }
-    @PostMapping("/RegisterOTPAuthentication")
+    @PostMapping("/registerOTPAuthentication")
     public ResponseEntity<?> authenticateOTPForRegister(@RequestBody RegisterDTO registerDTO) {
         try {
             if(registerDTO.getOtp() == null) {
