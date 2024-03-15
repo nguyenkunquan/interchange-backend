@@ -2,13 +2,6 @@ package com.interchange.repository;
 
 import com.interchange.entities.SupplierProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface SupplierProductRepository extends JpaRepository<SupplierProduct, Integer> {
-    SupplierProduct findBySupplier_SupIdAndProduct_ProId(int supId, int proId);
-=======
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -30,5 +23,6 @@ public interface SupplierProductRepository extends JpaRepository<SupplierProduct
 
     @Query(value = "SELECT * FROM supplier_product WHERE pro_id = ?1 AND sup_id = ?2", nativeQuery = true)
     SupplierProduct getFirstByProIdAndSupId(int proId, int supId);
->>>>>>> origin/main
+
+    SupplierProduct findBySupplier_SupIdAndProduct_ProId(int supId, int proId);
 }
