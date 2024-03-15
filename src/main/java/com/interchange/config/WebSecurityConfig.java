@@ -16,8 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
 
 
 @Configuration
@@ -61,9 +60,13 @@ public class WebSecurityConfig  {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/manageAccount").hasAnyRole("CUSTOMER", "ADMIN")
-                                .anyRequest().permitAll());
-        return http.build();
+                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth/forgetPassword").permitAll()
+                                .requestMatchers("/api/auth/forgetPasswordOTPAuthentication").permitAll()
+                                .requestMatchers("/api/auth/registration").permitAll()
+                                .requestMatchers("/api/auth/registerOTPAuthentication").permitAll()
+                                .anyRequest().authenticated());
+    return http.build();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class CategoryProduct {
     private int proCategoryId;
     private String categoryName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "categoryProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<CategoryMaterial> categoryMaterials = new HashSet<>();
 }

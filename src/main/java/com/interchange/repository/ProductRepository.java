@@ -1,5 +1,6 @@
 package com.interchange.repository;
 
+import com.interchange.dto.ProductDTO.ListProductDTO;
 import com.interchange.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -42,4 +43,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "    JOIN category_product cp ON cm.pro_category_id = cp.pro_category_id\n" +
             "    JOIN is_customized ic ON cp.is_customized_id = ic.is_customized_id", nativeQuery = true)
     Map<String, Object> isCustomizedByProId(int proId);
+
+    @Query(value = "SELECT p.pro_id  as productId, p.pro_name as productName, cp.category_name as categoryName, m.material_name as materialName " +
+            "FROM product p\n" +
+            "JOIN category_material cm ON p.category_material_id = cm.category_material_id\n" +
+            "JOIN category_product cp ON cm.pro_category_id = cp.pro_category_id\n" +
+            "JOIN material m ON cm.material_id = m.material_id", nativeQuery = true)
+    List<Map<String, Objects>> listProduct();
+
+    Product findFirstByProId(int proId);
+
+
 }

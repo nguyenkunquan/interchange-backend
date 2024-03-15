@@ -1,15 +1,10 @@
 package com.interchange.controller;
 
-import com.interchange.dto.ChangePasswordDTO;
-import com.interchange.dto.ForgetPasswordDTO;
-import com.interchange.dto.LoginDTO;
-import com.interchange.dto.RegisterDTO;
-import com.interchange.entities.User;
+import com.interchange.dto.AuthDTO.*;
 import com.interchange.repository.UserRepository;
 import com.interchange.service.TwilioOTPService;
 import com.interchange.service.UserService;
 import com.interchange.service.impl.UserDetailServiceImpl;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@CrossOrigin("*") // Allow all origins
+@RequestMapping("api/auth")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -67,9 +63,9 @@ public class AuthController {
             }
             twilioOTPService.sendOTP(registerDTO.getPhoneNumber());
             registerDTO.setOtp(twilioOTPService.getGenerateOTP());
-            return new ResponseEntity<>("Send OTP successfully" + " OTP: " + registerDTO.getOtp(), HttpStatus.OK);
+            return new ResponseEntity<>(registerDTO, HttpStatus.OK);
     }
-    @PostMapping("/RegisterOTPAuthentication")
+    @PostMapping("/registerOTPAuthentication")
     public ResponseEntity<?> authenticateOTPForRegister(@RequestBody RegisterDTO registerDTO) {
         try {
             if(registerDTO.getOtp() == null) {
@@ -114,10 +110,16 @@ public class AuthController {
             return new ResponseEntity<>("Fail to authenticate OTP", HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("/upgrading")
-    public ResponseEntity<?> updateUser(@RequestBody RegisterDTO registerDTO) {
+    @PutMapping("/upgrading/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId,
+                                        @Valid @RequestBody UpdateUserDTO updateUserDTO) {
         try {
-            return userService.updateUser(registerDTO);
+            if(!updateUserDTO.isOver18()) {
+                return new ResponseEntity<>("You must more than 18 years old", HttpStatus.BAD_REQUEST);
+            }
+            else {
+                return userService.updateUser(userId, updateUserDTO);
+            }
         }
         catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -129,10 +131,10 @@ public class AuthController {
         return userService.getProfile(userId);
     }
 
-    @PostMapping("/passwordChangingProcess")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
+    @PostMapping("/passwordChangingProcess/{userId}")
+    public ResponseEntity<?> changePassword(@PathVariable String userId, @RequestBody ChangePasswordDTO changePasswordDTO) {
         try {
-            return userService.changePassword(changePasswordDTO);
+            return userService.changePassword(userId, changePasswordDTO);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -1,11 +1,8 @@
 package com.interchange.service.impl;
 
+import com.interchange.dto.AuthDTO.*;
 import com.interchange.jwt.JwtTokenUtil;
 import com.interchange.converter.UserConverter;
-import com.interchange.dto.ChangePasswordDTO;
-import com.interchange.dto.ForgetPasswordDTO;
-import com.interchange.dto.LoginDTO;
-import com.interchange.dto.RegisterDTO;
 import com.interchange.entities.User;
 import com.interchange.repository.UserRepository;
 import com.interchange.service.UserService;
@@ -57,15 +54,19 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public ResponseEntity<?> registerUser(RegisterDTO registerDTO) {
-        User user = userConverter.toUser(registerDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return new ResponseEntity<>("Register successfully", HttpStatus.OK);
+        try {
+            User user = userConverter.toUser(registerDTO);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return new ResponseEntity<>("Register successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
     @Override
-    public ResponseEntity<?> updateUser(RegisterDTO registerDTO) {
-        User user = userRepository.findFirstByUserId(registerDTO.getUserId());
-        user = userConverter.toUser(registerDTO, user);
+    public ResponseEntity<?> updateUser(String userId, UpdateUserDTO updateUserDTO) {
+        User user = userRepository.findFirstByUserId(userId);
+        user = userConverter.toUser(updateUserDTO, user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return new ResponseEntity<>("Update successfully!", HttpStatus.OK);
@@ -76,8 +77,8 @@ public class UserServiceImpl implements UserService {
         return userConverter.toRegisterDTO(user);
     }
     @Override
-    public ResponseEntity<?> changePassword(ChangePasswordDTO changePasswordDTO) {
-        User user = userRepository.findFirstByUserId(changePasswordDTO.getUserId());
+    public ResponseEntity<?> changePassword(String userId, ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findFirstByUserId(userId);
         if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())){
             return new ResponseEntity<>("Invalid Old Password!", HttpStatus.BAD_REQUEST);
         }
