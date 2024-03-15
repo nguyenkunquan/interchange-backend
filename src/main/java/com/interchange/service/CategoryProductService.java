@@ -12,4 +12,8 @@ public interface CategoryProductService {
     ResponseEntity<?> addCategoryProduct(AddCategoryProductDTO addCategoryProductDTO);
 
     ResponseEntity<?> updateCategoryProduct(int catProId, AddCategoryProductDTO addCategoryProductDTO);
+
+    ResponseEntity<?> getAllMaterialsByProCategoryId(int proCategoryId);
+
+    ResponseEntity<?> getCategoryProductById(int catProId);
 }

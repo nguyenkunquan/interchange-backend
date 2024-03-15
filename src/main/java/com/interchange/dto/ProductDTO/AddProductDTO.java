@@ -23,12 +23,12 @@ public class AddProductDTO {
     private double height;
     @Min(value = 0, message = "The product width must be greater than or equal to 0")
     private double width;
-    @NotBlank(message = "The category name can not null")
-    private String categoryName;
-    @NotBlank(message = "The material name can not null")
-    private String materialName;
-    @NotBlank(message = "The room category can not null")
-    private String roomCategoryName;
+    @Min(value = 1, message = "The category Id must be greater than or equal to 0")
+    private int categoryId;
+    @Min(value = 1, message = "The material Id must be greater than or equal to 0")
+    private int materialId;
+    @Min(value = 1, message = "The room category Id must be greater than or equal to 0")
+    private int roomCategoryId;
     @NotEmpty(message = "The unit prices map can not be null or empty")
     private Map<Integer, Double> unitPrices;
 }

@@ -24,7 +24,7 @@ public class CustomerAndStaffConverter {
     }
     public User toUser(UpdateCustomerAndStaffDTO updateCustomerAndStaffDTO, User user) {
         user.setUserId(updateCustomerAndStaffDTO.getUserId());
-        user.setPassword(updateCustomerAndStaffDTO.getPassword());
+//        user.setPassword(updateCustomerAndStaffDTO.getPassword());
         user.setEmail(updateCustomerAndStaffDTO.getEmail());
         user.setPhoneNumber(updateCustomerAndStaffDTO.getPhoneNumber());
         user.setFirstName(updateCustomerAndStaffDTO.getFirstName());

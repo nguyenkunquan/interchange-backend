@@ -19,13 +19,21 @@ public class CategoryProductController {
         return categoryProductService.getAllCategoryProducts();
     }
 
+    @GetMapping("/listCategoryProductsByProId/{proId}")
+    public ResponseEntity<?> listCategoryProductsByProId(@PathVariable int proId) {
+        return categoryProductService.getCategoryProductById(proId);
+    }
     @PostMapping("/addCategoryProduct")
     public ResponseEntity<?> addCategoryProduct(@RequestBody AddCategoryProductDTO addCategoryProductDTO) {
         return categoryProductService.addCategoryProduct(addCategoryProductDTO);
     }
-
     @PutMapping("/updateCategoryProduct/{catProId}")
     public ResponseEntity<?> updateCategoryProduct(@PathVariable int catProId, @RequestBody AddCategoryProductDTO addCategoryProductDTO) {
         return categoryProductService.updateCategoryProduct(catProId, addCategoryProductDTO);
+    }
+
+    @GetMapping("/listMaterialsByProCategoryId/{proCategoryId}")
+    public ResponseEntity<?> listMaterialsByProCategoryId(@PathVariable int proCategoryId) {
+        return categoryProductService.getAllMaterialsByProCategoryId(proCategoryId);
     }
 }

@@ -13,9 +13,9 @@ public class UpdateCustomerAndStaffDTO {
     @Length(max = 10, message = "The User ID must be less than 10 characters")
     @NotBlank(message = "The User ID can not null")
     private String userId;
-    @NotBlank(message = "The password can not null")
-    @Length(min = 8, message = "Password must be at least 8 characters")
-    private String password;
+//    @NotBlank(message = "The password can not null")
+//    @Length(min = 8, message = "Password must be at least 8 characters")
+//    private String password;
     @NotBlank(message = "The phone number can not null")
     @Pattern(regexp = "^\\+[1-9]\\d{1,14}$", message = "Invalid phone number")
     private String phoneNumber;

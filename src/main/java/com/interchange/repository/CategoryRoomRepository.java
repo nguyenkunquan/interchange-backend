@@ -17,4 +17,5 @@ public interface CategoryRoomRepository extends JpaRepository<CategoryRoom, Inte
     List<Map<String, Objects>> findAllProductByRoomCategoryId(int roomCategoryId);
 
     CategoryRoom  findCategoryRoomByCategoryName(String categoryName);
+    CategoryRoom findCategoryRoomByRoomCategoryId(int roomCategoryId);
 }
