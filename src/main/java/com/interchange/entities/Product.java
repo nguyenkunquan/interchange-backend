@@ -24,6 +24,7 @@ public class Product {
     private String proDescription;
     private String proColor;
 
+    @JsonIgnore
     @ManyToOne(
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE,
@@ -41,6 +42,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SupplierProduct> supplierProducts = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne(
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE,

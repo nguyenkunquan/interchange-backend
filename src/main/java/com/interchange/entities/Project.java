@@ -49,11 +49,18 @@ public class Project {
     @JoinColumn(name = "projCategoryId")
     private CategoryProject categoryProject;
 
+    //@JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
     private Set<Room> rooms = new HashSet<>();
 
-    @JsonIgnoreProperties("project")
+    //@JsonIgnoreProperties("project")
+    @JsonIgnore
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private AdditionCost additionCost;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "quotationId", referencedColumnName = "quotationId")
+    private Quotation quotation;
 
 }

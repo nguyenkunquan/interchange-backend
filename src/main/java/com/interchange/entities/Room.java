@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Room {
     private double roomWidth;
     private double roomHeight;
 
+    @JsonIgnore
     @ManyToOne(
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE,
@@ -33,6 +35,7 @@ public class Room {
     @JoinColumn(name = "projId")
     private Project project;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "room")
     private Set<ImageRoom> imageRooms = new HashSet<>();
 
@@ -44,15 +47,6 @@ public class Room {
     )
     @JoinColumn(name = "roomCategoryId")
     private CategoryRoom categoryRoom;
-
-    @ManyToOne(
-            cascade = {
-                    CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH
-            }, fetch = FetchType.EAGER
-    )
-    @JoinColumn(name = "styleCategoryId")
-    private CategoryStyle categoryStyle;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RoomProduct> roomProducts = new HashSet<>();

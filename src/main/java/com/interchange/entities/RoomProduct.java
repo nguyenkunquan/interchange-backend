@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class RoomProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomProductId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "roomId")
     private Room room;

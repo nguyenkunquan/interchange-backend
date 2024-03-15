@@ -17,4 +17,10 @@ public class ProjectController {
     public ResponseEntity<?> findById(@RequestParam int projId){
         return projectService.findById(projId);
     }
+
+    @GetMapping("/categoryProject")
+    public ResponseEntity<?> findAllCategoryProject() {
+        return projectService.findAllCategoryProject();
+    }
+
 }

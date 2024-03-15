@@ -1,5 +1,6 @@
 package com.interchange.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class ProductDetail {
     private double proHeight;
     private double proPrice;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<RoomProduct> roomProducts = new HashSet<>();
 

@@ -96,4 +96,18 @@ public class User implements Serializable {
             return false;
         }
     }
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "staffId")
+    private Set<Blog> blogs = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "customer")
+    private Set<MainProject> mainProjects1 = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "staff")
+    private Set<MainProject> mainProjects2 = new HashSet<>();
+
 }

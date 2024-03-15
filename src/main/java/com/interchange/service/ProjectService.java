@@ -4,4 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface ProjectService {
     ResponseEntity<?> findById(int projectId);
+    ResponseEntity<?> findAllCategoryProject();
 }
