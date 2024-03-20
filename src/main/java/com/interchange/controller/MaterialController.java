@@ -7,13 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*") // Allow all origins
 @RequestMapping("/api/materials")
 public class MaterialController {
     @Autowired
     private MaterialService materialService;
     @GetMapping("/listMaterials")
     public ResponseEntity<?> listMaterials() {
-        return ResponseEntity.ok(materialService.getAllMaterials());
+        return materialService.getAllMaterials();
+    }
+    @GetMapping("/getMaterial/{materialId}")
+    public ResponseEntity<?> getMaterial(@PathVariable int materialId) {
+        return materialService.getMaterialById(materialId);
     }
     @PostMapping("/addMaterial")
     public ResponseEntity<?> addMaterial(@RequestBody MaterialDTO materialDTO) {

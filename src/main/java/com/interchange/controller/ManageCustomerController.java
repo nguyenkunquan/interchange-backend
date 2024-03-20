@@ -17,6 +17,7 @@ import java.util.Map;
 
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/manageCustomer")
 public class ManageCustomerController {
     @Autowired
@@ -25,7 +26,11 @@ public class ManageCustomerController {
     private CustomerService customerService;
     @GetMapping("/showCustomerList")
     public ResponseEntity<?> getCustomers() {
-        return ResponseEntity.ok(customerService.getCustomers());
+        return customerService.getCustomers();
+    }
+    @GetMapping("/showCustomer/{userId}")
+    public ResponseEntity<?> getCustomer(@PathVariable("userId") String userId) {
+        return customerService.getCustomerById(userId);
     }
     @PostMapping("/addCustomer")
     public  ResponseEntity<?> addCustomer(@Valid @RequestBody AddCustomerAndStaffDTO addCustomerAndStaffDTO) {

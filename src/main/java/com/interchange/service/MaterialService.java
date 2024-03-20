@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface MaterialService {
-    List<Material> getAllMaterials();
+    ResponseEntity<?> getAllMaterials();
     ResponseEntity<?> addMaterial(MaterialDTO materialDTO);
     ResponseEntity<?> updateMaterial(int materialId, MaterialDTO materialDTO);
+
+    ResponseEntity<?> getMaterialById(int materialId);
 }

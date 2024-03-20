@@ -82,8 +82,8 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
 
     }
     private CategoryMaterial getCategoryMaterial(AddProductDTO addProductDTO) {
-        int materialId = materialRepository.findMaterialByMaterialName(addProductDTO.getMaterialName()).getMaterialId();
-        int categoryId = categoryProductRepository.findCategoryProductByCategoryName(addProductDTO.getCategoryName()).getProCategoryId();
+        int materialId = addProductDTO.getMaterialId();
+        int categoryId = addProductDTO.getCategoryId();
         return categoryMaterialRepository.findCategoryMaterialByCategoryProductAndMaterial(categoryId, materialId);
     }
     private Product createProduct(AddProductDTO addProductDTO, CategoryMaterial categoryMaterial) {
@@ -94,7 +94,7 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
         product.setCategoryMaterial(categoryMaterial);
         product.setMeasureUnit(measureUnitRepository
                 .findFirstByMeasureUnitId(addProductDTO.getMeasureUnitId()));
-        product.setCategoryRoom(categoryRoomRepository.findCategoryRoomByCategoryName(addProductDTO.getRoomCategoryName()));
+        product.setCategoryRoom(categoryRoomRepository.findCategoryRoomByRoomCategoryId(addProductDTO.getRoomCategoryId()));
         return product;
     }
 
@@ -124,14 +124,14 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
 
     private double calculatePrice(AddProductDTO addProductDTO, Product product, int supplierId) {
         double unitPrice = addProductDTO.getUnitPrices().get(supplierId);
-        if(product.getMeasureUnit().getMeasureUnitName().equals("Mét Dài")) {
+        if(product.getMeasureUnit().getMeasureUnitId() == 2 || product.getMeasureUnit().getMeasureUnitId() == 3){
             return addProductDTO.getLength() * unitPrice;
-        } else if (product.getMeasureUnit().getMeasureUnitName().equals("Mét Vuông")) {
-            if (product.getMeasureUnit().isCusLength() && product.getMeasureUnit().isCusWidth()) {
-                return addProductDTO.getLength() * addProductDTO.getWidth() * unitPrice;
-            } else if (product.getMeasureUnit().isCusLength() && !product.getMeasureUnit().isCusWidth()) {
-                return addProductDTO.getLength() * unitPrice;
-            }
+        }
+        else if (product.getMeasureUnit().getMeasureUnitId() == 4) {
+            return addProductDTO.getLength() * addProductDTO.getWidth() * unitPrice;
+        }
+        else if (product.getMeasureUnit().getMeasureUnitId() == 5) {
+            return addProductDTO.getLength() * unitPrice;
         }
         return 0;
     }

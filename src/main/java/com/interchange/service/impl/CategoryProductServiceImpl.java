@@ -9,6 +9,7 @@ import com.interchange.repository.CategoryMaterialRepository;
 import com.interchange.repository.CategoryProductRepository;
 import com.interchange.repository.MaterialRepository;
 import com.interchange.service.CategoryProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,14 +35,19 @@ public class CategoryProductServiceImpl extends  BaseResponse implements Categor
             CategoryProduct categoryProduct = new CategoryProduct();
             categoryProduct.setCategoryName(addCategoryProductDTO.getCategoryName());
             categoryProductRepository.save(categoryProduct);
-                for(int materialId : addCategoryProductDTO.getMaterials()) {
+            if(addCategoryProductDTO.getMaterials() != null) {
+                for (int materialId : addCategoryProductDTO.getMaterials()) {
                     Material material = materialRepository.findFirstByMaterialId(materialId);
                     CategoryMaterial categoryMaterial = new CategoryMaterial();
                     categoryMaterial.setCategoryProduct(categoryProduct);
                     categoryMaterial.setMaterial(material);
                     categoryMaterialRepository.save(categoryMaterial);
                 }
-                return getResponseEntity("Category Product Added Successfully");
+            }
+            else {
+                return getResponseEntity("Materials are required");
+            }
+            return getResponseEntity("Category Product Added Successfully");
         } catch (Exception e) {
             return getResponseEntity(e.getMessage());
         }
@@ -72,5 +78,15 @@ public class CategoryProductServiceImpl extends  BaseResponse implements Categor
         } catch (Exception e) {
             return getResponseEntity(e.getMessage());
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllMaterialsByProCategoryId(int proCategoryId) {
+        return getResponseEntity(materialRepository.getAllMaterialsByProCategoryId(proCategoryId));
+    }
+
+    @Override
+    public ResponseEntity<?> getCategoryProductById(int catProId) {
+        return getResponseEntity(categoryProductRepository.findFirstByProCategoryId(catProId));
     }
 }

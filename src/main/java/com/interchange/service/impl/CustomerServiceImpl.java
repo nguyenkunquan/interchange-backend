@@ -1,5 +1,6 @@
 package com.interchange.service.impl;
 
+import com.interchange.base.BaseResponse;
 import com.interchange.converter.CustomerAndStaffConverter;
 import com.interchange.dto.ManageCustomerAndStaffDTO.AddCustomerAndStaffDTO;
 import com.interchange.dto.ManageCustomerAndStaffDTO.UpdateCustomerAndStaffDTO;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl extends BaseResponse implements CustomerService {
 
     private final UserRepository userRepository;
 
@@ -29,9 +30,15 @@ public class CustomerServiceImpl implements CustomerService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public List<User> getCustomers() {
-        return userRepository.getAllByRole(Role.CUSTOMER);
+    public ResponseEntity<?> getCustomers() {
+        return getResponseEntity(userRepository.getAllByRole(Role.CUSTOMER));
     }
+
+    @Override
+    public ResponseEntity<?> getCustomerById(String userId) {
+        return getResponseEntity(userRepository.getFirstByUserId(userId));
+    }
+
     @Override
     public ResponseEntity<?> addCustomer(AddCustomerAndStaffDTO addCustomerAndStaffDTO) {
         User user = customerAndStaffConverter.toUser(addCustomerAndStaffDTO);

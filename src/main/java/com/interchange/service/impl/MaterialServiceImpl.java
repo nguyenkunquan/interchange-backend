@@ -1,5 +1,6 @@
 package com.interchange.service.impl;
 
+import com.interchange.base.BaseResponse;
 import com.interchange.converter.MaterialConverter;
 import com.interchange.dto.MaterialDTO.MaterialDTO;
 import com.interchange.entities.Material;
@@ -13,14 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MaterialServiceImpl implements MaterialService {
+public class MaterialServiceImpl extends BaseResponse implements MaterialService {
     @Autowired
     private MaterialRepository materialRepository;
     @Autowired
     private MaterialConverter materialConverter;
     @Override
-    public List<Material> getAllMaterials() {
-        return materialRepository.findAll();
+    public ResponseEntity<?> getAllMaterials() {
+        return getResponseEntity(materialRepository.findAll());
     }
 
     @Override
@@ -38,6 +39,11 @@ public class MaterialServiceImpl implements MaterialService {
         }
         material = materialConverter.toMaterial(materialDTO, material);
         materialRepository.save(material);
-        return new ResponseEntity<>("Update material successfully!", HttpStatus.OK);
+        return getResponseEntity("Update material successfully!");
+    }
+
+    @Override
+    public ResponseEntity<?> getMaterialById(int materialId) {
+        return getResponseEntity(materialRepository.findFirstByMaterialId(materialId));
     }
 }
