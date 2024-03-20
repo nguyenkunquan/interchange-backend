@@ -10,4 +10,6 @@ public interface QuotationService {
     ResponseEntity<?> findQuotationById(int quotationId);
     ResponseEntity<?> saveQuotation(MainProjectDTO mainProjectDTO);
     ResponseEntity<?> findQuotationEagerById(int quotationId);
+    ResponseEntity<?> findQuotationListByStatus(int status, int page);
+    ResponseEntity<?> updateQuotationStatus(int quotationId, int newStatus, String contentResponse);
 }

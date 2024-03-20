@@ -17,14 +17,19 @@ public class MainProjectController {
     @Autowired
     MainProjectService mainProjectService;
 
-    @GetMapping("/was-approved")
-    public ResponseEntity<?> getMainProjectWasApproved(@RequestParam int status, @RequestParam("requestTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate requestTime) {
-        return mainProjectService.getMainProjectWasApproved(status, requestTime);
+    @GetMapping("/list")
+    public ResponseEntity<?> getMainProjectList(@RequestParam int status, @RequestParam int page) {
+        return mainProjectService.getMainProjectList(status, page);
     }
 
     @GetMapping()
     public ResponseEntity<?> findMainProjectById(@RequestParam int mainProjectId) {
         return mainProjectService.findMainProjectById(mainProjectId);
+    }
+
+    @GetMapping("/last-quotation")
+    public ResponseEntity<?> getLastQuotationOfMainProject(@RequestParam int mainProjectId) {
+        return mainProjectService.getLastQuotationOfMainProject(mainProjectId);
     }
 
 }

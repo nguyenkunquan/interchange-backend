@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -14,6 +15,7 @@ public class MainProjectDTO {
     private int mainProjectId;
     private String customerId;
     private String staffId;
+    private int status;
     private List<QuotationDTO> quotations;
 }
 

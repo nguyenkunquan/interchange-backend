@@ -27,6 +27,7 @@ public class Quotation {
     private Date requestTime;
     private int status;
     private String contentRequestQuotation;
+    private String contentResponse;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

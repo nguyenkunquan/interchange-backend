@@ -1,6 +1,8 @@
 package com.interchange.repository;
 
 import com.interchange.entities.Quotation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,5 +27,9 @@ public interface QuotationRepository extends JpaRepository<Quotation, Integer> {
             "FROM user u JOIN main_project mp ON u.user_id = mp.customer_id\n" +
             "            JOIN quotation q ON mp.main_project_id = q.main_project_id and q.quotation_id = ?", nativeQuery = true)
     Map<String, Object> findQuotationById(int quotationId);
+
+    @Query(value = "SELECT * FROM quotation q JOIN main_project mp " +
+            "WHERE q.main_project_id = mp.main_project_id and q.status = ?1 ", nativeQuery = true)
+    Page<Map<String, Object>> findQuotationListByStatus(int status, Pageable pageable);
 
 }

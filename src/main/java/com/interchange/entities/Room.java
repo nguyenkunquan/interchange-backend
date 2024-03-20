@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -49,5 +51,9 @@ public class Room {
     private CategoryRoom categoryRoom;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<RoomProduct> roomProducts = new HashSet<>();
+    private List<RoomProduct> roomProducts = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Design design;
 }

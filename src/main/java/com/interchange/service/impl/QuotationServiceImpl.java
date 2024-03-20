@@ -9,14 +9,21 @@ import com.interchange.entities.DTO.MainProjectDTO.RoomDTO;
 import com.interchange.repository.*;
 import com.interchange.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @Service
 public class QuotationServiceImpl extends BaseResponse implements QuotationService {
 
+    @Autowired
+    MainProjectRepository mainProjectRepository;
     @Autowired
     private QuotationRepository quotationRepository;
     @Autowired
@@ -50,9 +57,31 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
     }
 
     @Override
+    public ResponseEntity<?> findQuotationListByStatus(int status, int page) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "quotation_id"));
+        Page<Map<String, Object>> quotationPage;
+        quotationPage = quotationRepository.findQuotationListByStatus(status, pageable);
+        return getResponseEntity(quotationPage);
+    }
+
+    @Override
+    public ResponseEntity<?> updateQuotationStatus(int quotationId, int newStatus, String contentResponse) {
+        Quotation quotation = quotationRepository.findById(quotationId).get();
+        quotation.setStatus(newStatus);
+        if(!(contentResponse == "")) quotation.setContentResponse(contentResponse);
+        quotationRepository.save(quotation);
+        MainProject mainProject = mainProjectRepository.findById(quotation.getMainProject().getMainProjectId()).get();
+        mainProject.setStatus(newStatus);
+        mainProjectRepository.save(mainProject);
+        return getResponseEntity("Update quotation status successfully!");
+    }
+
+    //Giai đoạn 3 - Kiểm duyệt báo giá
+    @Override
     public ResponseEntity<?> saveQuotation(MainProjectDTO mainProjectDTO) {
         quotationRepository.findById(mainProjectDTO.getQuotations().get(0).getQuotationId()).get()
                 .setStatus(mainProjectDTO.getQuotations().get(0).getStatus());
+        mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get().setStatus(mainProjectDTO.getStatus());
         Project project = saveProject(mainProjectDTO);
         int supId = mainProjectDTO.getQuotations().get(0).getProject().getSupplierId();
         for (RoomDTO roomDTO : mainProjectDTO.getQuotations().get(0).getProject().getRooms()) {

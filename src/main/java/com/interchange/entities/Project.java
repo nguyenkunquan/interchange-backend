@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -51,7 +49,7 @@ public class Project {
 
     //@JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "project")
-    private Set<Room> rooms = new HashSet<>();
+    private List<Room> rooms = new ArrayList<>();
 
     //@JsonIgnoreProperties("project")
     @JsonIgnore

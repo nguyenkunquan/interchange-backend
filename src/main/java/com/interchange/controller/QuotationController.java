@@ -37,4 +37,14 @@ public class QuotationController {
         return quotationService.saveQuotation(mainProjectDTO);
     }
 
+    @GetMapping("/pagination-list")
+    public ResponseEntity<?> findQuotationListByStatus(@RequestParam int status, @RequestParam int page) {
+        return quotationService.findQuotationListByStatus(status, page);
+    }
+
+    @PostMapping("/update-status")
+    public ResponseEntity<?> updateQuotationStatus(@RequestParam int quotationId, @RequestParam int newStatus, @RequestParam String contentResponse) {
+        return quotationService.updateQuotationStatus(quotationId, newStatus, contentResponse);
+    }
+
 }
