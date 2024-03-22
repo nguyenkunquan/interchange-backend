@@ -1,5 +1,6 @@
 package com.interchange.service.impl;
 
+import com.interchange.base.BaseResponse;
 import com.interchange.converter.CustomerAndStaffConverter;
 import com.interchange.dto.ManageCustomerAndStaffDTO.AddCustomerAndStaffDTO;
 import com.interchange.dto.ManageCustomerAndStaffDTO.UpdateCustomerAndStaffDTO;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StaffServiceImpl implements StaffService {
+public class StaffServiceImpl extends BaseResponse implements StaffService {
     private final UserRepository userRepository;
 
     private final CustomerAndStaffConverter customerAndStaffConverter;
@@ -27,8 +28,13 @@ public class StaffServiceImpl implements StaffService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public List<User> getStaffs() {
-        return userRepository.getAllByRole(Role.STAFF);
+    public ResponseEntity<?> getStaffs() {
+        return getResponseEntity(userRepository.getAllByRole(Role.STAFF));
+    }
+
+    @Override
+    public ResponseEntity<?> getStaffById(String userId) {
+        return getResponseEntity(userRepository.getFirstByUserId(userId));
     }
 
     @Override

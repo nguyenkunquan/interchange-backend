@@ -8,4 +8,5 @@ public interface SupplierService {
     ResponseEntity<?> addSuppler(SupplierDTO supplierDTO);
     ResponseEntity<?> findAllSupplierProduct(int supplierId);
     ResponseEntity<?> updateSupplier(int supplierId, SupplierDTO supplierDTO);
+    ResponseEntity<?> findSupplierById(int supplierId);
 }

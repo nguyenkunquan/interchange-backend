@@ -31,4 +31,12 @@ public class AddProductDTO {
     private int roomCategoryId;
     @NotEmpty(message = "The unit prices map can not be null or empty")
     private Map<Integer, Double> unitPrices;
+    public boolean isValidUnitPrices() {
+        for (Double value : unitPrices.values()) {
+            if (value <= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

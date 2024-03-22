@@ -9,6 +9,8 @@ import java.util.List;
 
 @Data
 public class AddCategoryProductDTO {
+    @NotBlank(message = "Category name is required")
     private String categoryName;
+
     private List<Integer> materials;
 }

@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/api/manage-staff")
 public class ManageStaffController {
     @Autowired
@@ -25,7 +26,11 @@ public class ManageStaffController {
     private StaffService staffService;
     @GetMapping("/showStaffList")
     public ResponseEntity<?> getCustomers() {
-        return ResponseEntity.ok(staffService.getStaffs());
+        return staffService.getStaffs();
+    }
+    @GetMapping("/showStaff/{userId}")
+    public ResponseEntity<?> getCustomer(@PathVariable("userId") String userId) {
+        return staffService.getStaffById(userId);
     }
     @PostMapping("/addStaff")
     public  ResponseEntity<?> addStaff(@Valid @RequestBody AddCustomerAndStaffDTO addCustomerAndStaffDTO) {

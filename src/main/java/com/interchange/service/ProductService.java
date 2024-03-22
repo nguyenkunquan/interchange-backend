@@ -2,6 +2,8 @@ package com.interchange.service;
 
 import com.interchange.dto.ProductDTO.AddProductDTO;
 import com.interchange.dto.ProductDTO.ListProductDTO;
+import com.interchange.dto.ProductDTO.UpdateProductDTO;
+import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -15,6 +17,12 @@ public interface ProductService {
 
     ResponseEntity<?> listProduct();
 
-    ResponseEntity<?> AddProduct(AddProductDTO addProductDTO);
+    ResponseEntity<?> addProduct(AddProductDTO addProductDTO);
+
+    ResponseEntity<?> getProductById(int proId);
+
+    ResponseEntity<?> getProductInfoById(int proId);
+
+    ResponseEntity<?> updateProduct(int proId, UpdateProductDTO updateProductDTO);
 
 }

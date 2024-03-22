@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface StaffService {
-    List<User> getStaffs();
+    ResponseEntity<?> getStaffs();
+    ResponseEntity<?> getStaffById(String userId);
     ResponseEntity<?> addStaff(AddCustomerAndStaffDTO addCustomerAndStaffDTO);
 
     ResponseEntity<?> updateStaff(String userId, UpdateCustomerAndStaffDTO updateCustomerAndStaffDTO);

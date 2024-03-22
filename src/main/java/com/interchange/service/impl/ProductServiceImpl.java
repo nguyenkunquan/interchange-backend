@@ -2,6 +2,7 @@ package com.interchange.service.impl;
 
 import com.interchange.base.BaseResponse;
 import com.interchange.dto.ProductDTO.AddProductDTO;
+import com.interchange.dto.ProductDTO.UpdateProductDTO;
 import com.interchange.entities.*;
 import com.interchange.repository.*;
 import com.interchange.service.ProductService;
@@ -63,7 +64,7 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> AddProduct(AddProductDTO addProductDTO) {
+    public ResponseEntity<?> addProduct(AddProductDTO addProductDTO) {
         try {
             List<SupplierProduct> supplierProducts = new ArrayList<>();
             CategoryMaterial categoryMaterial = getCategoryMaterial(addProductDTO);
@@ -81,6 +82,29 @@ public class ProductServiceImpl extends BaseResponse implements ProductService {
         }
 
     }
+
+    @Override
+    public ResponseEntity<?> getProductById(int proId) {
+        return getResponseEntity(productRepository.findFirstByProId(proId));
+    }
+
+    @Override
+    public ResponseEntity<?> getProductInfoById(int proId) {
+        return getResponseEntity(productRepository.getProductInfoById(proId));
+    }
+
+    @Override
+    public ResponseEntity<?> updateProduct(int proId, UpdateProductDTO updateProductDTO) {
+        Product product = productRepository.findFirstByProId(proId);
+        if(product != null) {
+            product.setProName(updateProductDTO.getProName());
+            product.setProDescription(updateProductDTO.getProDescription());
+            product.setProColor(updateProductDTO.getProColor());
+        }
+        productRepository.save(product);
+        return getResponseEntity("Update Successfully!");
+    }
+
     private CategoryMaterial getCategoryMaterial(AddProductDTO addProductDTO) {
         int materialId = addProductDTO.getMaterialId();
         int categoryId = addProductDTO.getCategoryId();
