@@ -59,13 +59,13 @@ public class WebSecurityConfig  {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/api/auth/login").permitAll()
-                                .requestMatchers("/api/auth/forgetPassword").permitAll()
-                                .requestMatchers("/api/auth/forgetPasswordOTPAuthentication").permitAll()
-                                .requestMatchers("/api/auth/registration").permitAll()
-                                .requestMatchers("/api/auth/registerOTPAuthentication").permitAll()
-                                .anyRequest().authenticated());
+                        authorizeRequests.anyRequest().permitAll());
+//                                .requestMatchers("/api/auth/login").permitAll()
+//                                .requestMatchers("/api/auth/forgetPassword").permitAll()
+//                                .requestMatchers("/api/auth/forgetPasswordOTPAuthentication").permitAll()
+//                                .requestMatchers("/api/auth/registration").permitAll()
+//                                .requestMatchers("/api/auth/registerOTPAuthentication").permitAll()
+//                                .anyRequest().authenticated());
     return http.build();
     }
 
