@@ -16,7 +16,7 @@ public interface SupplierProductRepository extends JpaRepository<SupplierProduct
     List<Map<String, Object>> listSupplierProduct(int proId);
     SupplierProduct getFirstBySupplierProductId(int supplierProductId);
 
-    @Query(value = "SELECT  sp.supplier_product_id, sp.sup_id, s.sup_name, p.pro_name, sp.unit_price FROM supplier_product sp " +
+    @Query(value = "SELECT  sp.supplier_product_id, sp.sup_id, s.sup_name, p.pro_id, p.pro_name, sp.unit_price FROM supplier_product sp " +
             "JOIN supplier s ON sp.sup_id = s.sup_id " +
             "JOIN product p ON  sp.pro_id = p.pro_id WHERE sp.sup_id = ?1", nativeQuery = true)
     List<Map<String, Object>> listSupplierProductBySupId(int supId);

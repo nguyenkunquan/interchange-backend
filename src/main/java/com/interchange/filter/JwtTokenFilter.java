@@ -71,6 +71,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Pair.of("/api/auth/registerOTPAuthentication", "POST"),
                 Pair.of("/api/auth/forgetPassword", "POST"),
                 Pair.of("/api/auth/forgetPasswordOTPAuthentication","PUT")
+
         );
         for (Pair<String, String> bypassToken : bypassTokens) {
             if(request.getServletPath().contains(bypassToken.getFirst()) &&
@@ -78,6 +79,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 return true;
             }
         }
-        return false;
+//        return false;
+        return true;
     }
 }

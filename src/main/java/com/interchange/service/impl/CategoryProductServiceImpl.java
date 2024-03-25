@@ -62,6 +62,12 @@ public class CategoryProductServiceImpl extends  BaseResponse implements Categor
             categoryProductRepository.save(categoryProduct);
             List<Integer> materialIds = addCategoryProductDTO.getMaterials();
             if(materialIds != null) {
+                List<CategoryMaterial> categoryMaterials = categoryMaterialRepository.findAllByCategoryProduct(categoryProduct);
+                for (CategoryMaterial categoryMaterial : categoryMaterials) {
+                    if(!materialIds.contains(categoryMaterial.getMaterial().getMaterialId())) {
+                        categoryMaterialRepository.delete(categoryMaterial);
+                    }
+                }
                 for (int materialId : materialIds) {
                     Material material = materialRepository.findFirstByMaterialId(materialId);
                     CategoryMaterial categoryMaterial = categoryMaterialRepository

@@ -18,6 +18,14 @@ public class SupplierController {
     public ResponseEntity<?> findAll(){
         return supplierService.findAllSupplier();
     }
+    @GetMapping()
+    public ResponseEntity<?> findAll2(){
+        return supplierService.findAllSupplier();
+    }
+    @GetMapping("/findSupplierById/{supplierId}")
+    public ResponseEntity<?> findSupplierById(@PathVariable("supplierId") int supplierId){
+        return supplierService.findSupplierById(supplierId);
+    }
     @GetMapping("/listSupplierProduct/{supplierId}")
     public ResponseEntity<?> findAllSupplierProduct(@PathVariable("supplierId") int supplierId){
         return supplierService.findAllSupplierProduct(supplierId);

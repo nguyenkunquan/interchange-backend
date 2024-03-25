@@ -53,5 +53,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Product findFirstByProId(int proId);
 
+    @Query(value = "SELECT p.pro_name, p.pro_description, p.pro_color, mu.measure_unit_name, c.category_name AS product_category_name, m.material_name, cr.category_name FROM product p\n" +
+            "JOIN measure_unit mu ON p.measure_unit_id = mu.measure_unit_id\n" +
+            "JOIN category_room cr ON p.room_category_id = cr.room_category_id\n" +
+            "JOIN category_material cm ON p.category_material_id = cm.category_material_id\n" +
+            "JOIN category_product c ON cm.pro_category_id = c.pro_category_id\n" +
+            "JOIN material m ON cm.material_id = m.material_id\n" +
+            "WHERE p.pro_id =?1", nativeQuery = true)
+    Map<String, Object> getProductInfoById(int proId);
+
 
 }

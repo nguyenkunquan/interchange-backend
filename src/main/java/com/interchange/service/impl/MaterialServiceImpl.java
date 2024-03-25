@@ -26,9 +26,14 @@ public class MaterialServiceImpl extends BaseResponse implements MaterialService
 
     @Override
     public ResponseEntity<?> addMaterial(MaterialDTO materialDTO) {
-        Material material = materialConverter.toMaterial(materialDTO);
-        materialRepository.save(material);
-        return new ResponseEntity<>("Add material successfully!", HttpStatus.OK);
+        if(materialDTO.getMaterialName() == null || materialDTO.getMaterialName().isEmpty()) {
+            return new ResponseEntity<>("Material name is required!", HttpStatus.BAD_REQUEST);
+        }
+        else {
+            Material material = materialConverter.toMaterial(materialDTO);
+            materialRepository.save(material);
+            return getResponseEntity("Add material successfully!");
+        }
     }
 
     @Override
@@ -37,9 +42,11 @@ public class MaterialServiceImpl extends BaseResponse implements MaterialService
         if (material == null) {
             return new ResponseEntity<>("Material not found!", HttpStatus.NOT_FOUND);
         }
-        material = materialConverter.toMaterial(materialDTO, material);
-        materialRepository.save(material);
-        return getResponseEntity("Update material successfully!");
+        else {
+            material = materialConverter.toMaterial(materialDTO, material);
+            materialRepository.save(material);
+            return getResponseEntity("Update material successfully!");
+        }
     }
 
     @Override

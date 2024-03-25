@@ -21,4 +21,5 @@ public interface CategoryMaterialRepository extends JpaRepository<CategoryMateri
             "WHERE cp.pro_category_id = ?1 AND m.material_id = ?2", nativeQuery = true)
     CategoryMaterial findCategoryMaterialByCategoryProductAndMaterial(int categoryId, int materialId);
 
+    List<CategoryMaterial> findAllByCategoryProduct(CategoryProduct categoryProduct);
 }

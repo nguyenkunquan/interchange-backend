@@ -68,6 +68,12 @@ public class SupplierServiceImpl extends BaseResponse implements SupplierService
             return getResponseEntity("Update supplier failed");
         }
     }
+
+    @Override
+    public ResponseEntity<?> findSupplierById(int supplierId) {
+        return getResponseEntity(supplierRepository.getFirstBySupId(supplierId));
+    }
+
     private void addSupplierProduct(SupplierDTO supplierDTO, Supplier supplier) {
         for (Map.Entry<Integer, Double> entry : supplierDTO.getUnitPrices().entrySet()) {
             Product product = productRepository.findFirstByProId(entry.getKey());
