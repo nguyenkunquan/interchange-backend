@@ -79,9 +79,12 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
     //Giai đoạn 3 - Kiểm duyệt báo giá
     @Override
     public ResponseEntity<?> saveQuotation(MainProjectDTO mainProjectDTO) {
-        quotationRepository.findById(mainProjectDTO.getQuotations().get(0).getQuotationId()).get()
-                .setStatus(mainProjectDTO.getQuotations().get(0).getStatus());
-        mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get().setStatus(mainProjectDTO.getStatus());
+        Quotation quotation = quotationRepository.findById(mainProjectDTO.getQuotations().get(0).getQuotationId()).get();
+        quotation.setStatus(mainProjectDTO.getQuotations().get(0).getStatus());
+        quotationRepository.save(quotation);
+        MainProject mainProject = mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get();
+        mainProject.setStatus(mainProjectDTO.getStatus());
+        mainProjectRepository.save(mainProject);
         Project project = saveProject(mainProjectDTO);
         int supId = mainProjectDTO.getQuotations().get(0).getProject().getSupplierId();
         for (RoomDTO roomDTO : mainProjectDTO.getQuotations().get(0).getProject().getRooms()) {
@@ -139,6 +142,37 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
         roomProduct.setQuantity(quantity);
         roomProduct.setTotalPrice(totalPrice);
         roomProductRepository.save(roomProduct);
+    }
+
+    //Giai đoạn 2 - Cap nhat báo giá
+    @Override
+    public ResponseEntity<?> updateQuotation(MainProjectDTO mainProjectDTO) {
+        Quotation quotation = quotationRepository.findById(mainProjectDTO.getQuotations().get(0).getQuotationId()).get();
+        int curProjectId = quotation.getProject().getProjId();
+        quotation.setStatus(mainProjectDTO.getQuotations().get(0).getStatus());
+        quotationRepository.save(quotation);
+        MainProject mainProject = mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get();
+        mainProject.setStatus(mainProjectDTO.getStatus());
+        mainProjectRepository.save(mainProject);
+        Quotation updateQuotation = new Quotation();
+        updateQuotation.setQuotationId(quotation.getQuotationId());
+        updateQuotation.setRequestTime(quotation.getRequestTime());
+        updateQuotation.setStatus(quotation.getStatus());
+        updateQuotation.setContentRequestQuotation(quotation.getContentRequestQuotation());
+        updateQuotation.setContentResponse(quotation.getContentResponse());
+        updateQuotation.setMainProject(quotation.getMainProject());
+        quotationRepository.save(updateQuotation);
+        projectRepository.deleteById(curProjectId);
+        Project project = saveProject(mainProjectDTO);
+        int supId = mainProjectDTO.getQuotations().get(0).getProject().getSupplierId();
+        for (RoomDTO roomDTO : mainProjectDTO.getQuotations().get(0).getProject().getRooms()) {
+            Room room = saveRoom(project, roomDTO);
+            for (ProductDetailDTO productDetailDTO: roomDTO.getProductDetailList()) {
+                ProductDetail productDetail = saveProductDetail(supId, productDetailDTO);
+                saveRoomProduct(room, productDetail, productDetailDTO.getQuantity(), productDetailDTO.getTotalPrice());
+            }
+        }
+        return getResponseEntity("Update quotation successfully");
     }
 
 }
