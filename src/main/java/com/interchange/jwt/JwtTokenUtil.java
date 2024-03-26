@@ -28,12 +28,14 @@ public class JwtTokenUtil {
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getUserId());
+        claims.put("role", user.getRole());
         try {
             return Jwts.builder()
                     .setClaims(claims)
                     .setSubject(user.getUserId())
                     .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
                     .signWith(SignatureAlgorithm.HS256, getSignInKey())
+
                     .compact();
         } catch (Exception ex) {
             logger.info("Cannot create JWT Token: " + ex.getMessage());
