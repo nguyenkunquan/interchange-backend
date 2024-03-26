@@ -2,6 +2,7 @@ package com.interchange.controller;
 
 import com.interchange.dto.SupplierDTO.SupplierDTO;
 import com.interchange.service.SupplierService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +32,11 @@ public class SupplierController {
         return supplierService.findAllSupplierProduct(supplierId);
     }
     @PostMapping("/save")
-    public  ResponseEntity<?> addSuppler(@RequestBody SupplierDTO supplierDTO){
+    public  ResponseEntity<?> addSuppler(@Valid @RequestBody SupplierDTO supplierDTO){
         return supplierService.addSuppler(supplierDTO);
     }
     @PutMapping("/update/{supplierId}")
-    public ResponseEntity<?> updateSupplier(@PathVariable int supplierId, @RequestBody SupplierDTO supplierDTO){
+    public ResponseEntity<?> updateSupplier(@PathVariable int supplierId,@Valid @RequestBody SupplierDTO supplierDTO){
         return supplierService.updateSupplier(supplierId, supplierDTO);
     }
 }
