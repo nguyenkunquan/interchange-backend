@@ -32,4 +32,14 @@ public class MainProjectController {
         return mainProjectService.getLastQuotationOfMainProject(mainProjectId);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<?> createMainProject(@RequestBody MainProjectDTO mainProjectDTO) {
+        return mainProjectService.createMainProject(mainProjectDTO);
+    }
+
+    @GetMapping("list-by-cusId")
+    public ResponseEntity<?> getMainProjectListByCusId(@RequestParam String cusId) {
+        return mainProjectService.getMainProjectListByCusId(cusId);
+    }
+
 }

@@ -52,4 +52,8 @@ public class QuotationController {
         return quotationService.updateQuotationStatus(quotationId, newStatus, contentResponse);
     }
 
+    @PostMapping("/create-requestQuotation")
+    public ResponseEntity<?> createRequestQuotation(@RequestBody MainProjectDTO mainProjectDTO) {
+        return quotationService.createRequestQuotation(mainProjectDTO);
+    }
 }

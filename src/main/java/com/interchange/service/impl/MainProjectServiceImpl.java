@@ -2,9 +2,12 @@ package com.interchange.service.impl;
 
 import com.interchange.base.BaseResponse;
 import com.interchange.entities.Blog;
+import com.interchange.entities.DTO.MainProjectDTO.MainProjectDTO;
 import com.interchange.entities.MainProject;
 import com.interchange.entities.Quotation;
 import com.interchange.repository.MainProjectRepository;
+import com.interchange.repository.QuotationRepository;
+import com.interchange.repository.UserRepository;
 import com.interchange.service.MainProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -21,6 +24,10 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
 
     @Autowired
     private MainProjectRepository mainProjectRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private QuotationRepository quotationRepository;
 
     //    @Override
 //    public ResponseEntity<?> getMainProjectList(int status, LocalDate requestTime) {
@@ -119,6 +126,28 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
         MainProject mainProject = mainProjectRepository.findById(mainProjectId).get();
         List<Quotation> quotationList = mainProject.getQuotations();
         return getResponseEntity(quotationList.get(quotationList.size() - 2));
+    }
+
+    @Override
+    public ResponseEntity<?> createMainProject(MainProjectDTO mainProjectDTO) {
+        MainProject mainProject = new MainProject();
+        mainProject.setCustomer(userRepository.findById(mainProjectDTO.getCustomerId()).get());
+        mainProject.setStaff(userRepository.findById(mainProjectDTO.getStaffId()).get());
+        mainProject.setCreateTime(new Date());
+        mainProject.setStatus(1);
+        MainProject newMainProject = mainProjectRepository.save(mainProject);
+
+        Quotation firstQuotation = new Quotation();
+        firstQuotation.setRequestTime(new Date());
+        firstQuotation.setStatus(1);
+        firstQuotation.setContentRequestQuotation(mainProjectDTO.getQuotations().get(0).getContentRequestQuotation());
+        firstQuotation.setMainProject(newMainProject);
+        return getResponseEntity(quotationRepository.save(firstQuotation));
+    }
+
+    @Override
+    public ResponseEntity<?> getMainProjectListByCusId(String cusId) {
+        return getResponseEntity(mainProjectRepository.getMainProjectListByCusId(cusId));
     }
 
 }
