@@ -9,6 +9,8 @@ public interface MainProjectService {
     ResponseEntity<?> getMainProjectList(int status, int page);
     ResponseEntity<?> findMainProjectById(int id);
     ResponseEntity<?> getLastQuotationOfMainProject(int mainProjectId);
+    ResponseEntity<?> getPreQuotation(int mainProjectId, int preQuotationId);
     ResponseEntity<?> createMainProject(MainProjectDTO mainProjectDTO);
     ResponseEntity<?> getMainProjectListByCusId(String cusId);
+    ResponseEntity<?> hasRequestIsWaiting(int mainProjectId);
 }

@@ -17,4 +17,5 @@ public class QuotationDTO {
     private int status;
     private String contentRequestQuotation;
     private ProjectDTO project;
+    private int preQuotationId;
 }

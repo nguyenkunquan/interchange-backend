@@ -32,6 +32,11 @@ public class MainProjectController {
         return mainProjectService.getLastQuotationOfMainProject(mainProjectId);
     }
 
+    @GetMapping("/pre-quotation")
+    public ResponseEntity<?> getPreQuotation(@RequestParam int mainProjectId, @RequestParam int preQuotationId) {
+        return mainProjectService.getPreQuotation(mainProjectId, preQuotationId);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createMainProject(@RequestBody MainProjectDTO mainProjectDTO) {
         return mainProjectService.createMainProject(mainProjectDTO);
@@ -40,6 +45,11 @@ public class MainProjectController {
     @GetMapping("list-by-cusId")
     public ResponseEntity<?> getMainProjectListByCusId(@RequestParam String cusId) {
         return mainProjectService.getMainProjectListByCusId(cusId);
+    }
+
+    @GetMapping("/has-request-is-waiting")
+    ResponseEntity<?> hasRequestIsWaiting(@RequestParam int mainProjectId) {
+        return mainProjectService.hasRequestIsWaiting(mainProjectId);
     }
 
 }

@@ -83,6 +83,7 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
         newRequestQuotation.setRequestTime(new Date());
         newRequestQuotation.setStatus(1);
         newRequestQuotation.setContentRequestQuotation(mainProjectDTO.getQuotations().get(0).getContentRequestQuotation());
+        newRequestQuotation.setPreQuotationId(mainProjectDTO.getQuotations().get(0).getPreQuotationId());
         newRequestQuotation.setMainProject(mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get());
         return getResponseEntity(quotationRepository.save(newRequestQuotation));
     }

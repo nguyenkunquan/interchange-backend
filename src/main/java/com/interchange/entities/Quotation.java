@@ -39,4 +39,6 @@ public class Quotation {
     @OneToOne(mappedBy = "quotation", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Project project;
 
+    private int preQuotationId;
+
 }

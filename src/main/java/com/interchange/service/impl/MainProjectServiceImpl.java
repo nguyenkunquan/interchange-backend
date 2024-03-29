@@ -129,6 +129,11 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     }
 
     @Override
+    public ResponseEntity<?> getPreQuotation(int mainProjectId, int preQuotationId) {
+        return getResponseEntity(quotationRepository.findById(preQuotationId).get());
+    }
+
+    @Override
     public ResponseEntity<?> createMainProject(MainProjectDTO mainProjectDTO) {
         MainProject mainProject = new MainProject();
         mainProject.setCustomer(userRepository.findById(mainProjectDTO.getCustomerId()).get());
@@ -148,6 +153,17 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     @Override
     public ResponseEntity<?> getMainProjectListByCusId(String cusId) {
         return getResponseEntity(mainProjectRepository.getMainProjectListByCusId(cusId));
+    }
+
+    @Override
+    public ResponseEntity<?> hasRequestIsWaiting(int mainProjectId) {
+        MainProject mainProject = mainProjectRepository.findById(mainProjectId).get();
+        for (Quotation quotation : mainProject.getQuotations()) {
+            if (quotation.getStatus() == 1) {
+                return getResponseEntity(true);
+            }
+        }
+        return getResponseEntity(false);
     }
 
 }
