@@ -1,9 +1,12 @@
 package com.interchange.controller;
 
+import com.interchange.entities.DTO.MainProjectDTO.QuotationDTO;
+import com.interchange.entities.DTO.MainProjectDTO.RoomDTO;
 import com.interchange.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin("*")
@@ -21,6 +24,16 @@ public class ProjectController {
     @GetMapping("/categoryProject")
     public ResponseEntity<?> findAllCategoryProject() {
         return projectService.findAllCategoryProject();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateProject(@RequestBody QuotationDTO quotationDTO) {
+        return projectService.updateProject(quotationDTO);
+    }
+
+    @PostMapping("/update-image-rooms")
+    public ResponseEntity<?> updateImageRooms(@RequestParam int finalQuotationId, @RequestParam MultipartFile[] multipartFiles) {
+        return projectService.updateImageRooms(finalQuotationId, multipartFiles);
     }
 
 }

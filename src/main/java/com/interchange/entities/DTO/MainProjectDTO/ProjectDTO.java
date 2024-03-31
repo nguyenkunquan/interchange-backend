@@ -14,6 +14,7 @@ import java.util.List;
 public class ProjectDTO {
     private int projId;
     private String projName;
+    private String projDescription;
     private int projectCategoryId;
     private int supplierId;
     private int quotationId;

@@ -38,8 +38,8 @@ public class Room {
     private Project project;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "room")
-    private Set<ImageRoom> imageRooms = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "room")
+    private ImageRoom imageRoom;
 
     @ManyToOne(
             cascade = {

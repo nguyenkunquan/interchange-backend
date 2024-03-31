@@ -13,4 +13,5 @@ public interface MainProjectService {
     ResponseEntity<?> createMainProject(MainProjectDTO mainProjectDTO);
     ResponseEntity<?> getMainProjectListByCusId(String cusId);
     ResponseEntity<?> hasRequestIsWaiting(int mainProjectId);
+    ResponseEntity<?> getFinalQuotation(int mainProjectId);
 }

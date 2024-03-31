@@ -1,6 +1,7 @@
 package com.interchange.base;
 
 import com.interchange.entities.ImageBlog;
+import com.interchange.entities.ImageRoom;
 import com.interchange.entities.MyResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,6 +34,12 @@ public class BaseResponse {
         return ResponseEntity.status(200)
                 .headers(headers)
                 .body(imageBlog.getContent());
+    }
+
+    protected ResponseEntity<?> getResponseEntityRoomFile(ImageRoom imageRoom) {
+        return ResponseEntity.status(200)
+                .contentType(MediaType.parseMediaType(imageRoom.getContentType()))
+                .body(imageRoom.getContent());
     }
 
 }

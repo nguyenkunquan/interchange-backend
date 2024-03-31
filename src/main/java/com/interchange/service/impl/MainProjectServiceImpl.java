@@ -159,11 +159,22 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     public ResponseEntity<?> hasRequestIsWaiting(int mainProjectId) {
         MainProject mainProject = mainProjectRepository.findById(mainProjectId).get();
         for (Quotation quotation : mainProject.getQuotations()) {
-            if (quotation.getStatus() == 1) {
+            if (quotation.getStatus() == 1 || quotation.getStatus() == 2 || quotation.getStatus() == 3) {
                 return getResponseEntity(true);
             }
         }
         return getResponseEntity(false);
+    }
+
+    @Override
+    public ResponseEntity<?> getFinalQuotation(int mainProjectId) {
+        MainProject mainProject = mainProjectRepository.findById(mainProjectId).get();
+        for (Quotation quotation : mainProject.getQuotations()) {
+            if (quotation.getStatus() >= 5) {
+                return getResponseEntity(quotation.getQuotationId());
+            }
+        }
+        return getResponseEntity(null);
     }
 
 }

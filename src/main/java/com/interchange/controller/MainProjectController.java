@@ -52,4 +52,9 @@ public class MainProjectController {
         return mainProjectService.hasRequestIsWaiting(mainProjectId);
     }
 
+    @GetMapping("/final-quotation")
+    ResponseEntity<?> getFinalQuotation(@RequestParam int mainProjectId) {
+        return mainProjectService.getFinalQuotation(mainProjectId);
+    }
+
 }
