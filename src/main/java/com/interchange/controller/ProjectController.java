@@ -23,4 +23,9 @@ public class ProjectController {
         return projectService.findAllCategoryProject();
     }
 
+    @GetMapping("/export")
+    public ResponseEntity<?> exportProject() {
+        return projectService.exportProject();
+    }
+
 }

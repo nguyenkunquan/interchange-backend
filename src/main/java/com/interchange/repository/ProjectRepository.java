@@ -1,8 +1,16 @@
 package com.interchange.repository;
 
+import com.interchange.dto.ExportDTO.ExportDTO;
 import com.interchange.entities.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
@@ -15,5 +23,19 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 //                    "    JOIN supplier_product sp ON pd.supplier_product_id = sp.supplier_product_id\n" +
 //                    "    JOIN product p ON sp.pro_id = p.pro_id", nativeQuery = true)
 //    List<Map<String , Objects>> findProjectRoomProductDetails(int projId);
+
+    @Query(value = "SELECT mp.main_project_id, q.quotation_id, u.first_name, u.last_name, u.phone_number, q.request_time, q.content_request_quotation, q.status " +
+            "FROM user u " +
+            "JOIN main_project mp ON u.user_id = mp.customer_id " +
+            "JOIN quotation q ON mp.main_project_id = q.main_project_id " +
+            "WHERE q.request_time = :requestTime and q.status = 1", nativeQuery = true)
+    List<Map<String, Objects>> findAllPendingQuotationByTime(@Param("requestTime") LocalDate requestTime);
+
+    @Query(value = "SELECT u.first_name AS firstName, u.last_name AS lastName, pj.end_date AS endDate, pj.proj_cost AS projCost " +
+            "FROM project pj " +
+            "JOIN quotation q ON pj.quotation_id = q.quotation_id " +
+            "JOIN main_project mp ON q.main_project_id = mp.main_project_id " +
+            "JOIN user u ON u.user_id = mp.customer_id", nativeQuery = true)
+    List<Map<String, Object>> exportProject();
 
 }
