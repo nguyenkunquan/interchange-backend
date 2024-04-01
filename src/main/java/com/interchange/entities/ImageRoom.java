@@ -21,7 +21,7 @@ public class ImageRoom {
     @Column(length = 50000000)
     private byte[] content;
 
-    @ManyToOne(
+    @OneToOne(
             cascade = {
                     CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH

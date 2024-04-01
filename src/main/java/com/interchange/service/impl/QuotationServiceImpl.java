@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -74,6 +75,17 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
         mainProject.setStatus(newStatus);
         mainProjectRepository.save(mainProject);
         return getResponseEntity("Update quotation status successfully!");
+    }
+
+    @Override
+    public ResponseEntity<?> createRequestQuotation(MainProjectDTO mainProjectDTO) {
+        Quotation newRequestQuotation = new Quotation();
+        newRequestQuotation.setRequestTime(new Date());
+        newRequestQuotation.setStatus(1);
+        newRequestQuotation.setContentRequestQuotation(mainProjectDTO.getQuotations().get(0).getContentRequestQuotation());
+        newRequestQuotation.setPreQuotationId(mainProjectDTO.getQuotations().get(0).getPreQuotationId());
+        newRequestQuotation.setMainProject(mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get());
+        return getResponseEntity(quotationRepository.save(newRequestQuotation));
     }
 
     //Giai đoạn 3 - Kiểm duyệt báo giá

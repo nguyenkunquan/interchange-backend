@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class RoomDTO {
     private int roomId;
     private String roomName;
+    private String roomDescription;
     private int roomCategoryId;
     List<ProductDetailDTO> productDetailList;
 }

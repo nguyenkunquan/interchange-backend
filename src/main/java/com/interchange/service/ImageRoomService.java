@@ -1,0 +1,10 @@
+package com.interchange.service;
+
+import com.interchange.entities.Project;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface ImageRoomService {
+    ResponseEntity<?> save(Project project, MultipartFile[] multipartFiles);
+    ResponseEntity<?> getImageRoomByRoomId(int roomId);
+}

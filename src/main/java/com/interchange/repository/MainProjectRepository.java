@@ -29,4 +29,7 @@ public interface MainProjectRepository extends JpaRepository<MainProject, Intege
     Page<Map<String, Object>> findByStatus(int status, Pageable pageable);
     @Query(value = "SELECT * FROM main_project", nativeQuery = true)
     Page<Map<String, Object>> findAllByPage(Pageable pageable);
+
+    @Query(value = "SELECT * FROM main_project WHERE customer_id = ?1 ", nativeQuery = true)
+    List<Map<String, Object>> getMainProjectListByCusId(String cusId);
 }
