@@ -26,11 +26,10 @@ public class ProjectController {
         return projectService.findAllCategoryProject();
     }
 
-<<<<<<< HEAD
     @GetMapping("/export")
     public ResponseEntity<?> exportProject() {
         return projectService.exportProject();
-=======
+    }
     @PostMapping("/update")
     public ResponseEntity<?> updateProject(@RequestBody QuotationDTO quotationDTO) {
         return projectService.updateProject(quotationDTO);
@@ -39,7 +38,9 @@ public class ProjectController {
     @PostMapping("/update-image-rooms")
     public ResponseEntity<?> updateImageRooms(@RequestParam int finalQuotationId, @RequestParam MultipartFile[] multipartFiles) {
         return projectService.updateImageRooms(finalQuotationId, multipartFiles);
->>>>>>> origin/main
     }
+
+
+
 
 }
