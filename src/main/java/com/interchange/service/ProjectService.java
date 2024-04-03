@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ProjectService {
     ResponseEntity<?> findById(int projectId);
     ResponseEntity<?> findAllCategoryProject();
+    ResponseEntity<?> exportProject();
     ResponseEntity<?> updateProject(QuotationDTO quotationDTO);
     ResponseEntity<?> updateImageRooms(int finalQuotationId, MultipartFile[] multipartFiles);
 }
