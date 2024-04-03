@@ -37,6 +37,9 @@ public class BaseResponse {
     }
 
     protected ResponseEntity<?> getResponseEntityRoomFile(ImageRoom imageRoom) {
+        if(imageRoom == null) {
+            return ResponseEntity.status(404).body(null);
+        }
         return ResponseEntity.status(200)
                 .contentType(MediaType.parseMediaType(imageRoom.getContentType()))
                 .body(imageRoom.getContent());

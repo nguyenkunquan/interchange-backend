@@ -3,9 +3,11 @@ package com.interchange.service.impl;
 import com.interchange.base.BaseResponse;
 import com.interchange.entities.DTO.MainProjectDTO.QuotationDTO;
 import com.interchange.entities.DTO.MainProjectDTO.RoomDTO;
+import com.interchange.entities.MainProject;
 import com.interchange.entities.Project;
 import com.interchange.entities.Quotation;
 import com.interchange.repository.CategoryProjectRepository;
+import com.interchange.repository.MainProjectRepository;
 import com.interchange.repository.ProjectRepository;
 import com.interchange.repository.QuotationRepository;
 import com.interchange.service.ImageRoomService;
@@ -18,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ProjectServiceImpl extends BaseResponse implements ProjectService {
 
+    @Autowired
+    private MainProjectRepository mainProjectRepository;
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
@@ -41,7 +45,14 @@ public class ProjectServiceImpl extends BaseResponse implements ProjectService {
     @Override
     public ResponseEntity<?> updateProject(QuotationDTO quotationDTO) {
         Quotation quotation = quotationRepository.findById(quotationDTO.getQuotationId()).get();
+        quotation.setStatus(quotationDTO.getStatus());
+
+        MainProject mainProject = mainProjectRepository.findById(quotation.getMainProject().getMainProjectId()).get();
+        mainProject.setStatus(quotationDTO.getStatus());
+        mainProjectRepository.save(mainProject);
+
         Project project = projectRepository.findById(quotation.getProject().getProjId()).get();
+        quotationRepository.save(quotation);
         project.setProjName(quotationDTO.getProject().getProjName());
         project.setProjDes(quotationDTO.getProject().getProjDescription());
         for (int i = 0; i < quotationDTO.getProject().getRooms().size(); i++) {

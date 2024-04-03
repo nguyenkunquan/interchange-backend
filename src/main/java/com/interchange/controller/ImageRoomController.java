@@ -18,4 +18,9 @@ public class ImageRoomController {
         return imageRoomService.getImageRoomByRoomId(roomId);
     }
 
+    @GetMapping("/is-room-has-image")
+    public ResponseEntity<?> isRoomHasImage(@RequestParam int roomId) {
+        return imageRoomService.isRoomHasImage(roomId);
+    }
+
 }

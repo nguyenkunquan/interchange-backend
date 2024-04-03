@@ -109,7 +109,7 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     public ResponseEntity<?> getMainProjectList(int status, int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "main_project_id"));
         Page<Map<String, Object>> mainProjectPage;
-        if(status==0)
+        if(status==-1)
             mainProjectPage = mainProjectRepository.findAllByPage(pageable);
         else
             mainProjectPage = mainProjectRepository.findByStatus(status, pageable);
@@ -170,7 +170,7 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     public ResponseEntity<?> getFinalQuotation(int mainProjectId) {
         MainProject mainProject = mainProjectRepository.findById(mainProjectId).get();
         for (Quotation quotation : mainProject.getQuotations()) {
-            if (quotation.getStatus() >= 5) {
+            if (quotation.getStatus() >= 5 || quotation.getStatus() == 0) {
                 return getResponseEntity(quotation.getQuotationId());
             }
         }
