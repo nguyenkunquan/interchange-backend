@@ -25,4 +25,7 @@ public interface SupplierProductRepository extends JpaRepository<SupplierProduct
     SupplierProduct getFirstByProIdAndSupId(int proId, int supId);
 
     SupplierProduct findBySupplier_SupIdAndProduct_ProId(int supId, int proId);
+
+    @Query(value = "SELECT COUNT(*) FROM supplier_product WHERE sup_id = ?1", nativeQuery = true)
+    Integer countProductBySupplierID(int supId);
 }

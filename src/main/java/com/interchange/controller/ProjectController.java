@@ -26,9 +26,9 @@ public class ProjectController {
         return projectService.findAllCategoryProject();
     }
 
-    @GetMapping("/export")
-    public ResponseEntity<?> exportProject() {
-        return projectService.exportProject();
+    @GetMapping("/export/{year}")
+    public ResponseEntity<?> exportProject(@PathVariable("year") int year) {
+        return projectService.exportProject(year);
     }
     @PostMapping("/update")
     public ResponseEntity<?> updateProject(@RequestBody QuotationDTO quotationDTO) {
@@ -38,6 +38,10 @@ public class ProjectController {
     @PostMapping("/update-image-rooms")
     public ResponseEntity<?> updateImageRooms(@RequestParam int finalQuotationId, @RequestParam MultipartFile[] multipartFiles) {
         return projectService.updateImageRooms(finalQuotationId, multipartFiles);
+    }
+    @GetMapping("/total-cost/{year}")
+    public ResponseEntity<?> getTotalCost(@PathVariable("year") int year) {
+        return projectService.getProjectCostByYear(year);
     }
 
 

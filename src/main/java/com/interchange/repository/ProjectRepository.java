@@ -1,6 +1,5 @@
 package com.interchange.repository;
 
-import com.interchange.dto.ExportDTO.ExportDTO;
 import com.interchange.entities.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,7 +34,14 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
             "FROM project pj " +
             "JOIN quotation q ON pj.quotation_id = q.quotation_id " +
             "JOIN main_project mp ON q.main_project_id = mp.main_project_id " +
-            "JOIN user u ON u.user_id = mp.customer_id", nativeQuery = true)
-    List<Map<String, Object>> exportProject();
+            "JOIN user u ON u.user_id = mp.customer_id " +
+            "WHERE YEAR(pj.end_date) = ?1", nativeQuery = true)
+    List<Map<String, Object>> exportProject(int year);
+
+    @Query(value = "select COALESCE(SUM(pj.proj_cost), 0) as total_cost " +
+            "FROM project pj " +
+            "WHERE YEAR(pj.end_date) = ?1 AND MONTH(pj.end_date) = ?2", nativeQuery = true)
+    Integer getTotalCost(int year, int month);
+
 
 }
