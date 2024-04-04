@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -206,6 +207,23 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
         }
 
         return uniqueQuotationList;
+    }
+    @Override
+    public ResponseEntity<?> countQuotationByStatus() {
+        int countDangChoPheDuyet = quotationRepository.countQuotationByStatus(1);
+        int countDangXulyYeuCau = quotationRepository.countQuotationByStatus(2) +
+                quotationRepository.countQuotationByStatus(3) +
+                quotationRepository.countQuotationByStatus(4) +
+                quotationRepository.countQuotationByStatus(5);
+        int countDaHoanThanh = quotationRepository.countQuotationByStatus(6);
+        int countDaHuy = quotationRepository.countQuotationByStatus(0);
+        List<Integer> count = new ArrayList<>();
+        count.add(countDangChoPheDuyet);
+        count.add(countDangXulyYeuCau);
+        count.add(countDaHoanThanh);
+        count.add(countDaHuy);
+
+        return ResponseEntity.status(HttpStatus.OK).body(count);
     }
 
 }

@@ -31,7 +31,10 @@ public interface QuotationRepository extends JpaRepository<Quotation, Integer> {
     @Query(value = "SELECT * FROM quotation q JOIN main_project mp " +
             "WHERE q.main_project_id = mp.main_project_id and q.status = ?1 ", nativeQuery = true)
     Page<Map<String, Object>> findQuotationListByStatus(int status, Pageable pageable);
-
+    @Query(value = "SELECT COUNT(*) " +
+            "FROM quotation q " +
+            "WHERE q.status = ?1", nativeQuery = true)
+    Integer countQuotationByStatus(int status);
     @Query(value = "SELECT * FROM quotation q JOIN project p JOIN room r\n" +
             "    ON q.status = ?1\n" +
             "           and q.quotation_id = p.quotation_id\n" +

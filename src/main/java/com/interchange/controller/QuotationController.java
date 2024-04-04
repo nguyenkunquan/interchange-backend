@@ -21,6 +21,10 @@ public class QuotationController {
     public ResponseEntity<?> findAllPendingQuotationByTime(@RequestParam("requestTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate requestTime) {
         return quotationService.findAllPendingQuotationByTime(requestTime);
     }
+    @GetMapping("/countQuotationByStatus")
+    public ResponseEntity<?> countQuotationByStatus() {
+        return quotationService.countQuotationByStatus();
+    }
 
     @GetMapping("/findById")
     public ResponseEntity<?> findQuotationById(@RequestParam int quotationId) {
