@@ -58,6 +58,7 @@ public class UserServiceImpl extends BaseResponse implements UserService {
         map.put("userId", user.getUserId());
         map.put("token", jwtTokenUtil.generateToken(user));
         map.put("name", user.getFirstName() + " " + user.getLastName());
+        map.put("role", user.getRole().toString());
         response.add(map);
         return getResponseEntity(response);
     }
