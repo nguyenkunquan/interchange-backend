@@ -2,7 +2,6 @@ package com.interchange.service.impl;
 
 import com.interchange.base.BaseResponse;
 import com.interchange.entities.DTO.MainProjectDTO.QuotationDTO;
-import com.interchange.entities.DTO.MainProjectDTO.RoomDTO;
 import com.interchange.entities.MainProject;
 import com.interchange.entities.Project;
 import com.interchange.entities.Quotation;
@@ -17,16 +16,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
+
 
 @Service
 public class ProjectServiceImpl extends BaseResponse implements ProjectService {
@@ -52,9 +54,24 @@ public class ProjectServiceImpl extends BaseResponse implements ProjectService {
     public ResponseEntity<?> findAllCategoryProject() {
         return getResponseEntity(categoryProjectRepository.findAll());
     }
+    @Override
+    public ResponseEntity<?> getProjectCostByYear(int year) {
+        try {
+            List<Integer> total = new ArrayList<>();
+            for(int i = 1; i<= 12; i++) {
+                int projectCost = projectRepository.getTotalCost(year, i);
+                total.add(projectCost);
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(total);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error while getting project cost by year");
+        }
+    }
 
     @Override
-    public ResponseEntity<?> exportProject() {
+    public ResponseEntity<?> exportProject(int year) {
         try(Workbook workbook = new SXSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Report");
 
@@ -64,7 +81,7 @@ public class ProjectServiceImpl extends BaseResponse implements ProjectService {
             titleRow.createCell(2).setCellValue("Thời gian hoàn thành");
             titleRow.createCell(3).setCellValue("Giá trị dự án");
             titleRow.createCell(4).setCellValue("Ghi chú");
-            List<Map<String, Object>> exportDTOS = projectRepository.exportProject();
+            List<Map<String, Object>> exportDTOS = projectRepository.exportProject(year);
             int rowcount = 1;
             double totalCost = 0;
             for(Map<String, Object> exportDTO : exportDTOS) {
