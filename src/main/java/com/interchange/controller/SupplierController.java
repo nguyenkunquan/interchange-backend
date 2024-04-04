@@ -1,6 +1,7 @@
 package com.interchange.controller;
 
 import com.interchange.dto.SupplierDTO.SupplierDTO;
+import com.interchange.service.SupplierProductService;
 import com.interchange.service.SupplierService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class SupplierController {
 
     @Autowired
     SupplierService supplierService;
+
+    @Autowired
+    SupplierProductService supplierProductService;
 
     @GetMapping("/listSupplier")
     public ResponseEntity<?> findAll(){
@@ -39,4 +43,12 @@ public class SupplierController {
     public ResponseEntity<?> updateSupplier(@PathVariable int supplierId,@Valid @RequestBody SupplierDTO supplierDTO){
         return supplierService.updateSupplier(supplierId, supplierDTO);
     }
+
+    @GetMapping("/countProductBySupplier")
+    public ResponseEntity<?> countProductBySupplier(){
+        return supplierProductService.listCountProductBySupplierID();
+    }
+
+
+
 }
