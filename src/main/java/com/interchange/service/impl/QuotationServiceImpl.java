@@ -13,15 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QuotationServiceImpl extends BaseResponse implements QuotationService {
@@ -89,24 +85,6 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
         newRequestQuotation.setPreQuotationId(mainProjectDTO.getQuotations().get(0).getPreQuotationId());
         newRequestQuotation.setMainProject(mainProjectRepository.findById(mainProjectDTO.getMainProjectId()).get());
         return getResponseEntity(quotationRepository.save(newRequestQuotation));
-    }
-
-    @Override
-    public ResponseEntity<?> countQuotationByStatus() {
-        int countDangChoPheDuyet = quotationRepository.countQuotationByStatus(1);
-        int countDangXulyYeuCau = quotationRepository.countQuotationByStatus(2) +
-                quotationRepository.countQuotationByStatus(3) +
-                quotationRepository.countQuotationByStatus(4) +
-                quotationRepository.countQuotationByStatus(5);
-        int countDaHoanThanh = quotationRepository.countQuotationByStatus(6);
-        int countDaHuy = quotationRepository.countQuotationByStatus(0);
-        List<Integer> count = new ArrayList<>();
-        count.add(countDangChoPheDuyet);
-        count.add(countDangXulyYeuCau);
-        count.add(countDaHoanThanh);
-        count.add(countDaHuy);
-
-        return ResponseEntity.status(HttpStatus.OK).body(count);
     }
 
     //Giai đoạn 3 - Kiểm duyệt báo giá
@@ -206,6 +184,28 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
             }
         }
         return getResponseEntity("Update quotation successfully");
+    }
+
+    @Override
+    public ResponseEntity<?> findQuotationByStatusAndProjectCategory(int status, int projectCategoryId) {
+        List<Map<String, Object>> quotationList = quotationRepository.findQuotationByStatusAndProjectCategory(status, projectCategoryId);
+        List<Map<String, Object>> uniqueQuotationList = getUniqueQuotationList(quotationList);
+        return getResponseEntity(uniqueQuotationList);
+    }
+
+    public List<Map<String, Object>> getUniqueQuotationList(List<Map<String, Object>> quotationList) {
+        List<Map<String, Object>> uniqueQuotationList = new ArrayList<>();
+        Set<String> quotationIds = new HashSet<>();
+
+        for (Map<String, Object> quotationMap : quotationList) {
+            String quotationId = (String) quotationMap.get("quotationId");
+            if (!quotationIds.contains(quotationId)) {
+                uniqueQuotationList.add(quotationMap);
+                quotationIds.add(quotationId);
+            }
+        }
+
+        return uniqueQuotationList;
     }
 
 }

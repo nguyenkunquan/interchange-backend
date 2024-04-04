@@ -57,8 +57,9 @@ public class QuotationController {
         return quotationService.createRequestQuotation(mainProjectDTO);
     }
 
-    @GetMapping("/countQuotationByStatus")
-    public ResponseEntity<?> countQuotationByStatus() {
-        return quotationService.countQuotationByStatus();
+    @GetMapping("/find-quotation-by-status-and-project-category")
+    public ResponseEntity<?> findQuotationByStatusAndProjectCategory(@RequestParam int status, @RequestParam int projectCategoryId) {
+        return quotationService.findQuotationByStatusAndProjectCategory(status, projectCategoryId);
     }
+
 }

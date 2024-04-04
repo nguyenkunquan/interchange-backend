@@ -57,4 +57,9 @@ public class MainProjectController {
         return mainProjectService.getFinalQuotation(mainProjectId);
     }
 
+    @PostMapping("/save-with-first-quotation-has-information")
+    ResponseEntity<?> saveMainProjectWithFirstQuotationHasInformation(@RequestBody MainProjectDTO mainProjectDTO) {
+        return mainProjectService.saveMainProjectWithFirstQuotationHasInformation(mainProjectDTO);
+    }
+
 }

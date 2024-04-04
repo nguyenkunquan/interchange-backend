@@ -1,14 +1,13 @@
 package com.interchange.service.impl;
 
 import com.interchange.base.BaseResponse;
-import com.interchange.entities.Blog;
+import com.interchange.entities.*;
 import com.interchange.entities.DTO.MainProjectDTO.MainProjectDTO;
-import com.interchange.entities.MainProject;
-import com.interchange.entities.Quotation;
-import com.interchange.repository.MainProjectRepository;
-import com.interchange.repository.QuotationRepository;
-import com.interchange.repository.UserRepository;
+import com.interchange.entities.DTO.MainProjectDTO.ProductDetailDTO;
+import com.interchange.entities.DTO.MainProjectDTO.RoomDTO;
+import com.interchange.repository.*;
 import com.interchange.service.MainProjectService;
+import com.interchange.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +27,20 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
     private UserRepository userRepository;
     @Autowired
     private QuotationRepository quotationRepository;
+    @Autowired
+    private CategoryProjectRepository categoryProjectRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private CategoryRoomRepository categoryRoomRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
+    @Autowired
+    private RoomProductRepository roomProductRepository;
+    @Autowired
+    private SupplierProductRepository supplierProductRepository;
 
     //    @Override
 //    public ResponseEntity<?> getMainProjectList(int status, LocalDate requestTime) {
@@ -175,6 +188,71 @@ public class MainProjectServiceImpl extends BaseResponse implements MainProjectS
             }
         }
         return getResponseEntity(null);
+    }
+
+    @Override
+    public ResponseEntity<?> saveMainProjectWithFirstQuotationHasInformation(MainProjectDTO mainProjectDTO) {
+        MainProject mainProject = new MainProject();
+        mainProject.setCustomer(userRepository.findById(mainProjectDTO.getCustomerId()).get());
+        mainProject.setStaff(userRepository.findById(mainProjectDTO.getStaffId()).get());
+        mainProject.setCreateTime(new Date());
+        mainProject.setStatus(1);
+        MainProject newMainProject = mainProjectRepository.save(mainProject);
+
+        Quotation firstQuotation = new Quotation();
+        firstQuotation.setRequestTime(new Date());
+        firstQuotation.setStatus(1);
+        firstQuotation.setPreQuotationId(0);
+        firstQuotation.setContentRequestQuotation(mainProjectDTO.getQuotations().get(0).getContentRequestQuotation());
+        firstQuotation.setMainProject(newMainProject);
+        Quotation newQuotation = quotationRepository.save(firstQuotation);
+
+        Project firstProject = new Project();
+        String projName = mainProjectDTO.getQuotations().get(0).getProject().getProjName();
+        int projectCategoryId = mainProjectDTO.getQuotations().get(0).getProject().getProjectCategoryId();
+        firstProject.setProjName(projName);
+        firstProject.setCategoryProject(categoryProjectRepository.findById(projectCategoryId).get());
+        firstProject.setQuotation(newQuotation);
+        Project newProject = projectRepository.save(firstProject);
+        int supId = mainProjectDTO.getQuotations().get(0).getProject().getSupplierId();
+        for (RoomDTO roomDTO : mainProjectDTO.getQuotations().get(0).getProject().getRooms()) {
+            Room room = saveRoom(newProject, roomDTO);
+            for (ProductDetailDTO productDetailDTO: roomDTO.getProductDetailList()) {
+                ProductDetail productDetail = saveProductDetail(supId, productDetailDTO);
+                saveRoomProduct(room, productDetail, productDetailDTO.getQuantity(), productDetailDTO.getTotalPrice());
+            }
+        }
+        return getResponseEntity("Save new quotation successfully");
+    }
+
+    public Room saveRoom(Project project, RoomDTO roomDTO) {
+        Room room = new Room();
+        if(roomDTO.getRoomId()!=0) room.setRoomId(roomDTO.getRoomId());
+        room.setRoomName(roomDTO.getRoomName());
+        room.setCategoryRoom(categoryRoomRepository.findById(roomDTO.getRoomCategoryId()).get());
+        room.setProject(project);
+        return roomRepository.save(room);
+    }
+
+    public ProductDetail saveProductDetail(int supId, ProductDetailDTO productDetailDTO) {
+        int quantity = productDetailDTO.getQuantity();
+        double totalPrice = productDetailDTO.getTotalPrice();
+        ProductDetail productDetail = new ProductDetail();
+        productDetail.setProLength(productDetailDTO.getProLength());
+        productDetail.setProWidth(productDetailDTO.getProWidth());
+        productDetail.setProHeight(productDetailDTO.getProHeight());
+        productDetail.setProPrice(totalPrice/quantity);
+        productDetail.setSupplierProduct(supplierProductRepository.findBySupplier_SupIdAndProduct_ProId(supId, productDetailDTO.getProId()));
+        return productDetailRepository.save(productDetail);
+    }
+
+    public void saveRoomProduct(Room room, ProductDetail productDetail, int quantity, double totalPrice) {
+        RoomProduct roomProduct = new RoomProduct();
+        roomProduct.setRoom(room);
+        roomProduct.setProductDetail(productDetail);
+        roomProduct.setQuantity(quantity);
+        roomProduct.setTotalPrice(totalPrice);
+        roomProductRepository.save(roomProduct);
     }
 
 }
