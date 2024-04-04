@@ -17,8 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QuotationServiceImpl extends BaseResponse implements QuotationService {
@@ -185,6 +184,28 @@ public class QuotationServiceImpl extends BaseResponse implements QuotationServi
             }
         }
         return getResponseEntity("Update quotation successfully");
+    }
+
+    @Override
+    public ResponseEntity<?> findQuotationByStatusAndProjectCategory(int status, int projectCategoryId) {
+        List<Map<String, Object>> quotationList = quotationRepository.findQuotationByStatusAndProjectCategory(status, projectCategoryId);
+        List<Map<String, Object>> uniqueQuotationList = getUniqueQuotationList(quotationList);
+        return getResponseEntity(uniqueQuotationList);
+    }
+
+    public List<Map<String, Object>> getUniqueQuotationList(List<Map<String, Object>> quotationList) {
+        List<Map<String, Object>> uniqueQuotationList = new ArrayList<>();
+        Set<String> quotationIds = new HashSet<>();
+
+        for (Map<String, Object> quotationMap : quotationList) {
+            String quotationId = (String) quotationMap.get("quotationId");
+            if (!quotationIds.contains(quotationId)) {
+                uniqueQuotationList.add(quotationMap);
+                quotationIds.add(quotationId);
+            }
+        }
+
+        return uniqueQuotationList;
     }
 
 }

@@ -14,4 +14,5 @@ public interface QuotationService {
     ResponseEntity<?> findQuotationListByStatus(int status, int page);
     ResponseEntity<?> updateQuotationStatus(int quotationId, int newStatus, String contentResponse);
     ResponseEntity<?> createRequestQuotation(MainProjectDTO mainProjectDTO);
+    ResponseEntity<?> findQuotationByStatusAndProjectCategory(int status, int projectCategoryId);
 }
