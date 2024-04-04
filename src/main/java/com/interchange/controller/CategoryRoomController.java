@@ -16,7 +16,7 @@ public class CategoryRoomController {
     @Autowired
     CategoryRoomService categoryRoomService;
 
-    @GetMapping("/findAll")
+    @GetMapping("")
     public ResponseEntity<?> findAll() {
         return categoryRoomService.findAll();
     }
