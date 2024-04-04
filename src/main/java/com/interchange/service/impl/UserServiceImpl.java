@@ -1,5 +1,6 @@
 package com.interchange.service.impl;
 
+import com.interchange.base.BaseResponse;
 import com.interchange.dto.AuthDTO.*;
 import com.interchange.jwt.JwtTokenUtil;
 import com.interchange.converter.UserConverter;
@@ -14,8 +15,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends BaseResponse implements UserService {
 
     private final UserRepository userRepository;
 
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
         this.jwtTokenUtil = jwtTokenUtil;
     }
     @Override
-    public String login(LoginDTO loginDTO) {
+    public ResponseEntity<?> login(LoginDTO loginDTO) {
         User user = userRepository.findByUserIdOrEmailOrPhoneNumber(
                         loginDTO.getUserIdOrPhoneNumberOrEmail(),
                         loginDTO.getUserIdOrPhoneNumberOrEmail(),
@@ -50,7 +53,13 @@ public class UserServiceImpl implements UserService {
                 loginDTO.getUserIdOrPhoneNumberOrEmail(),loginDTO.getPassword()
         );
         authenticationManager.authenticate(authenticationToken);
-        return jwtTokenUtil.generateToken(user);
+        List<Map<String, String>> response = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", user.getUserId());
+        map.put("token", jwtTokenUtil.generateToken(user));
+        map.put("name", user.getFirstName() + " " + user.getLastName());
+        response.add(map);
+        return getResponseEntity(response);
     }
     @Override
     public ResponseEntity<?> registerUser(RegisterDTO registerDTO) {

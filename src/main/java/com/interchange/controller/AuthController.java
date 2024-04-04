@@ -36,8 +36,7 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
         try {
-            String token = userService.login(loginDTO);
-            return ResponseEntity.ok(token);
+            return userService.login(loginDTO);
         } catch (BadCredentialsException e) {
             return ResponseEntity.badRequest().body("Incorrect password");
         } catch (UsernameNotFoundException e) {
