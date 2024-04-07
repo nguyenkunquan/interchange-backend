@@ -14,8 +14,8 @@ The system for interior construction quotes by a specific entity includes the fo
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/d34e9bd8-1a62-4d90-afe1-d58c9d40fd81)
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/84e0f22e-b85e-4fd7-bcb0-b941d4e80950)
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/61ed5d07-6523-43da-b900-7714064bb37b)
-### Preview Results:
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/7fcc38e8-0ee4-49b8-80d9-41e1ce960a6f)
+### Preview Results:
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/d2df15bf-a0a3-42e0-a9ef-e2de8149fa50)
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/d7198e5e-000b-4d1c-af0c-2210757135dc)
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/dbfe30d5-0760-43e9-86fc-feaae7c33a7d)
