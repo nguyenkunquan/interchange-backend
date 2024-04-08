@@ -7,6 +7,9 @@ The system for interior construction quotes by a specific entity includes the fo
   <img src="https://contrib.rocks/image?repo=anhkhoa0812/interchange-backend" />
 </a>
 
+### Technologies:
+Java Spring Boot, JWT, REST API, Postman, MySQL, Maven, ...
+
 ### Preview Codes:
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/8584f518-f7e7-4c28-a762-452f9a558e8a)
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/6700d4c2-acfb-4808-a5ca-a032fb85b21c)
