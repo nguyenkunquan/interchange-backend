@@ -8,7 +8,7 @@ The system for interior construction quotes by a specific entity includes the fo
 </a>
 
 ### Technologies:
-Java Spring Boot, JWT, REST API, Postman, MySQL, Maven, ...
+Java Spring Boot, JWT, REST API, Postman, MySQL, Maven,...
 
 ### Preview Codes:
 ![image](https://github.com/nguyenkunquan/interchange-backend/assets/152289671/8584f518-f7e7-4c28-a762-452f9a558e8a)
